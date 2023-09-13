@@ -1,0 +1,55 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+html,body{
+    max-width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+  /* user-select: none; */
+}
+
+.productStack{
+  display: flex;
+  flex-direction: row;
+}
+.slick-slide{
+  width: 14rem;
+}
+.slick-slider{
+  position: unset !important;
+}
+.slick-track{
+  display: flex !important;
+}
+.slick-next,.slick-prev{
+  display: none;
+}
+
+/* .productStack:hover .slick-prev{
+  display: block;
+} */
+.productStack .slick-prev,.banner .slick-prev{
+  width: 3rem;
+  height: 3rem;
+  left: -2px;
+   z-index: 10;
+    background-color: black;
+}
+.productStack .slick-next,.banner .slick-next{
+    width: 3rem;
+  height: 3rem;
+  left: 95.2%;
+   z-index: 10;
+    background-color: black;
+}
+
+.productStack .slick-prev:hover,.productStack .slick-next:hover{
+  background-color: black;
+}
+ .productStack .slick-prev:focus,.productStack .slick-next:focus{
+  background-color: black;
+  /* width: 3rem;
+  height: 5rem; */
+}
