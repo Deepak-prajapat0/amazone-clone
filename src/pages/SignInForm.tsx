@@ -25,7 +25,7 @@ export default function SignInForm() {
         formState: { errors },
     } = useForm();
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): any => {
         const { name, value } = e.target;
         setLoginDetails({
             ...loginDetails,
