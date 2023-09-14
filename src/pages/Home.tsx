@@ -23,7 +23,7 @@ export default function Main() {
       <ImageCarousel images={bannerImage}/>
      {/* <Box position="relative"> */}
       {/* position="sticky" top={{ base: "8rem", sm: "10rem", md: "12rem", lg: "14rem" }} */}
-        <Box width="100vw" mt="-20rem" >
+        <Box width="100vw" mt={{base:"-10rem", sm:"-5rem",md:"-5rem"}} >
           <GridOnLarge cards={cards} />
           <ProductsContainer cards={cards} />
         </Box>

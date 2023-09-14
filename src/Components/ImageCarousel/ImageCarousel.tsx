@@ -20,10 +20,10 @@ const ImageCarousel = ({ images }:Props) => {
     };
 
     return (
-       <Box width="100vw" height="40rem">
+       <Box width="100vw" height="20rem">
             <Slider {...settings} className='banner'>
-                {images.map(img =>
-                    <Image src={img} alt={`Image`} width="100%" height="100%" />
+                {images.map((img,index) =>
+                    <Image key={index} src={img} alt={`Image`} width="100%" height="100%" />
                 )}
             </Slider>
        </Box>

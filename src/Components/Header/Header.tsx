@@ -1,8 +1,10 @@
 import { Box, HStack, Input, InputGroup, InputRightElement, Text, VStack } from '@chakra-ui/react'
-import { AiFillCaretDown, AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import NavHeader from './NavHeader';
+import UserMenu from './UserMenu';
 
 export default function Header() {
+    
     return (
         <header style={{ backgroundColor: "#131921", color: "white" }}>
             <HStack p="2" justifyContent="space-between">
@@ -18,7 +20,7 @@ export default function Header() {
                         <Text width="100%"  as="span">Hello, sign in</Text>
                         <HStack fontSize={13}>
                             <span>Account & Lists</span>
-                            <AiFillCaretDown />
+                            <UserMenu/>
                         </HStack>
                     </VStack>
                     <VStack gap=".5">

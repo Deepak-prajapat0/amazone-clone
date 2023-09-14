@@ -1,5 +1,4 @@
-import { Card, CardHeader, CardBody, HStack } from '@chakra-ui/react'
-import React from 'react'
+import { Card } from '@chakra-ui/react'
 
 export default function Container() {
   return (

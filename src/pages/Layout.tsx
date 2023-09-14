@@ -10,7 +10,7 @@ export default function Layout() {
         <Header />
         <Outlet />
       {/* </div> */}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }

@@ -1,8 +1,5 @@
-.mainContainer{
-    /* position: relative; */
-    /* background-color: aqua; */
-    height: 22rem;
-}
+
+
 .productStack::-webkit-scrollbar {
   display: hidden;
 }

@@ -48,7 +48,7 @@ export default function ProductsContainer({cards}:Props) {
                 breakpoint: 480,
                 settings: {
                     slidesToShow: 1,
-                    slidesToScroll: 1,
+                    slidesToScroll: 2,
                     arrows:false
                 }
             }
@@ -64,9 +64,9 @@ export default function ProductsContainer({cards}:Props) {
                       {index === 2 && <Heading size="md" py='4'>Appliances | Up to 55% off</Heading>}
                       <Slider {...settings}  className='productStack' >
                           {products.map((product) =>
-                              <Box key={product.id} mx="1" width="12rem" >
-                                  <Image src={product.thumbnail} alt={product.title} height="9rem" width="12rem"  />
-                                  <Text noOfLines={3} style={{ fontSize: "clamp(10px, 4vw, 14px)" }}>{product.title}</Text>
+                              <Box key={product.id} mx="1" width="8rem" >
+                                  <Image src={product.thumbnail} alt={product.title} height="9rem" width="100%"  />
+                                  <Text noOfLines={3} color="#088EC4" style={{ fontSize: "clamp(10px, 4vw, 14px)" }}>{product.title}</Text>
                               </Box>
                           )}
                           
