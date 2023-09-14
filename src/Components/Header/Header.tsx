@@ -2,13 +2,14 @@ import { Box, HStack, Input, InputGroup, InputRightElement, Text, VStack } from 
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import NavHeader from './NavHeader';
 import UserMenu from './UserMenu';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
     
     return (
-        <header style={{ backgroundColor: "#131921", color: "white" }}>
+        <header style={{width:"100%", position:"fixed", zIndex:"50", backgroundColor: "#131921", color: "white" }}>
             <HStack p="2" justifyContent="space-between">
-                <Text fontSize=" calc(12px + .8vw)" fontWeight="900">amazon.in</Text>
+                <Link to="/" style={{ fontSize:" calc(12px + .8vw)" ,fontWeight:"900" }}>amazon.in</Link>
                 <InputGroup maxWidth={"40rem"} color="black" outline="none">
                     <InputRightElement pointerEvents='none' backgroundColor="#FEBD69" borderEndRadius="4px" >
                         <AiOutlineSearch />

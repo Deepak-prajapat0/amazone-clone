@@ -33,7 +33,7 @@ export default function FooterLinks() {
 
 
     return (
-        <SimpleGrid columns={4} py="4" justifyItems="center">
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} gap={{ base: "3rem", md:"20px"}} py="4" px={{base:"2rem",md:0}} justifyItems={{ md: "center" }}>
                 <VStack   mt="0" alignItems="flex-start" >
                 <Text fontSize={18} fontWeight="bold">Get to Know Us </Text>
                     {link1.map((link, index) =>

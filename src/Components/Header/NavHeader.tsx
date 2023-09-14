@@ -12,13 +12,13 @@ export default function NavHeader() {
     ]
 
   return (
-      <HStack as="nav" p="2" pl="4" gap="6" fontSize={13} style={{ backgroundColor: "#232F3E",color:"white" }}>
+      <HStack className='navLinks' as="nav" p="2" pl="4" gap="6" overflow="auto" fontSize={13} style={{ backgroundColor: "#232F3E",color:"white" }}>
           <HStack gap="1" as="button">
               <i style={{fontSize:"18px"}}><AiOutlineMenu /></i>
               <span>All</span>
           </HStack>
           {links.map((link,index)=>
-              <Link key={index} href={link.link} >{link.name}</Link>
+              <Link minWidth="fit-content" key={index} href={link.link} >{link.name}</Link>
           )}
       </HStack>
   )

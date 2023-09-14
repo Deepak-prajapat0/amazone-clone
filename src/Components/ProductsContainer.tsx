@@ -1,4 +1,4 @@
-import {Box, Card,Image, CardBody, Heading, VStack, Text } from '@chakra-ui/react'
+import {Box, Card,Image, CardBody, Heading, VStack, Text, Badge } from '@chakra-ui/react'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -64,9 +64,10 @@ export default function ProductsContainer({cards}:Props) {
                       {index === 2 && <Heading size="md" py='4'>Appliances | Up to 55% off</Heading>}
                       <Slider {...settings}  className='productStack' >
                           {products.map((product) =>
-                              <Box key={product.id} mx="1" width="8rem" >
+                              <Box key={product.id} mx="1" p="2" width="8rem" >
                                   <Image src={product.thumbnail} alt={product.title} height="9rem" width="100%"  />
                                   <Text noOfLines={3} color="#088EC4" style={{ fontSize: "clamp(10px, 4vw, 14px)" }}>{product.title}</Text>
+                                  <Text fontSize={18} mt={2}>&#8377;{product.price.cost} <Badge padding="4px 8px" backgroundColor="#CC0C39" color="white" fontSize="11">{product.price.discount} off</Badge></Text>
                               </Box>
                           )}
                           
