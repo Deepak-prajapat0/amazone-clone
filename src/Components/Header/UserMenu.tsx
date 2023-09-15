@@ -1,16 +1,16 @@
 import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react'
 import { useState } from 'react'
 import { AiFillCaretDown } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import SIgnInButton from '../CustomComponent/SIgnInButton'
 
 export default function UserMenu() {
     const[open,setOpen] = useState(false)
   return (
       <Menu isOpen={ open }>
           <MenuButton onMouseEnter={()=>setOpen(true)}><AiFillCaretDown/></MenuButton>
-          <MenuList onMouseLeave={()=>setOpen(false)} color="black">
+          <MenuList onMouseLeave={()=>setOpen(false)} zIndex={50} color="black">
               {/* MenuItems are not rendered unless Menu is open */}
-              <Link to="/signin">Sign in</Link>
+              <SIgnInButton/>
               <MenuItem>Open Closed Tab</MenuItem>
               <MenuItem>Open File</MenuItem>
           </MenuList>

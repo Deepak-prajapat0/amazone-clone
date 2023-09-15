@@ -12,7 +12,7 @@ export default function NavHeader() {
     ]
 
   return (
-      <HStack className='navLinks' as="nav" p="2" pl="4" gap="6" overflow="auto" fontSize={13} style={{ backgroundColor: "#232F3E",color:"white" }}>
+      <HStack style={{ width: "100%", zIndex: "20", backgroundColor: "#232F3E", color: "white" }} className='navLinks' as="nav" p="2" pl="4" gap="6" overflow="auto" fontSize={13} >
           <HStack gap="1" as="button">
               <i style={{fontSize:"18px"}}><AiOutlineMenu /></i>
               <span>All</span>

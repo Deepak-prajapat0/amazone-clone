@@ -1,17 +1,24 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import Header from '../Components/Header/Header'
 import Footer from '../Components/Footer/Footer'
 import { Box } from '@chakra-ui/react'
+import { useEffect } from 'react';
+import NavHeader from '../Components/Header/NavHeader';
 
 export default function Layout() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);    
+  }, [pathname]);
+
   return (
     <div>
-
         <Header />
-      <Box paddingTop={{ base: "7rem", md:"6.8rem"}} minHeight= "100vh">
+      <Box paddingTop="4rem" minHeight= "100vh">
+      {pathname !== '/signin' && pathname !=='/signup'  &&<NavHeader/>}
         <Outlet />
       </Box>
-      <Footer />
+      {pathname !== '/signin' && pathname !== '/signup' && <Footer />}
     </div>
   )
 }

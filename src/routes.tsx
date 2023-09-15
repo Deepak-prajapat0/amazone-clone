@@ -3,6 +3,8 @@ import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
 import SignInForm from "./pages/SignInForm";
+import SignupForm from "./pages/SignupForm";
+import ProductDetails from "./pages/ProductDetails";
 
  const router = createBrowserRouter( [
        {
@@ -12,6 +14,8 @@ import SignInForm from "./pages/SignInForm";
         children: [
             { index: true, element: <Home/> },
             {path:'/signin', element: <SignInForm/> },
+            {path:'/signup', element: <SignupForm/> },
+            {path:'/product/:id', element: <ProductDetails/> },
             // { path: 'game/:slug', element: <GameDetailPage /> }
         ]
     }

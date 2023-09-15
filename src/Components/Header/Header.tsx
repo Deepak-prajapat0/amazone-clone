@@ -1,6 +1,5 @@
-import { Box, HStack, Input, InputGroup, InputRightElement, Text, VStack } from '@chakra-ui/react'
+import { Box, HStack,Image, Input, InputGroup, InputRightElement, Text, VStack } from '@chakra-ui/react';
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
-import NavHeader from './NavHeader';
 import UserMenu from './UserMenu';
 import { Link } from 'react-router-dom';
 
@@ -9,7 +8,9 @@ export default function Header() {
     return (
         <header style={{width:"100%", position:"fixed", zIndex:"50", backgroundColor: "#131921", color: "white" }}>
             <HStack p="2" justifyContent="space-between">
-                <Link to="/" style={{ fontSize:" calc(12px + .8vw)" ,fontWeight:"900" }}>amazon.in</Link>
+                <Link to="/" style={{ fontSize:" calc(12px + .8vw)" ,fontWeight:"900" }}>
+                    <Image src="https://firebasestorage.googleapis.com/v0/b/angular-e92b6.appspot.com/o/amazon-white-removebg-preview%20(2).png?alt=media&token=da13b1e4-b7d8-41ea-96e0-a7d1945e7854" width="6rem" margin="15px 0 0 5px" color="white"/>
+                </Link>
                 <InputGroup maxWidth={"40rem"} color="black" outline="none">
                     <InputRightElement pointerEvents='none' backgroundColor="#FEBD69" borderEndRadius="4px" >
                         <AiOutlineSearch />
@@ -31,7 +32,6 @@ export default function Header() {
                     <Box display="flex" alignItems="end" style={{ fontSize: "2.1rem" }}><i><AiOutlineShoppingCart /></i> <span style={{fontSize:"12px"}}>cart</span></Box>
                </HStack>
             </HStack>
-            <NavHeader/>
         </header>
     )
 }

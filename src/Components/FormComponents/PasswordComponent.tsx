@@ -1,24 +1,37 @@
-import { Heading, Text, FormControl, FormLabel, Input, Button, Highlight, HStack, Link } from "@chakra-ui/react";
+import { Heading, Text, FormControl, FormLabel, Input, Button, HStack, Link, Checkbox } from "@chakra-ui/react";
 import FormContainer from "./FormContainer";
+import { FieldValues, UseFormHandleSubmit } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {
+    email:string;
     register: any;
     errors: any;
-    setFilled: (value: boolean) => void;
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    handleToggle: () => void;
+    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSubmit:UseFormHandleSubmit<FieldValues>
 }
 
 
-export default function PasswordComponent({ register, setFilled, handleInputChange }:Props) {
+export default function PasswordComponent({email, register, handleToggle, handleInputChange,handleSubmit }:Props) {
+
+    const navigate = useNavigate()
+    const location = useLocation()
+    const formSubmit =(data:any)=>{
+        navigate(location.state?.prevUrl)
+        console.log(data);
+        
+    }
+
     return (
         <FormContainer>
-            <form style={{ width: "100%", padding: "1.5rem", }}>
+            <form style={{ width: "100%", padding: "1.5rem", }} onSubmit={handleSubmit(formSubmit)}>
                 <Heading fontWeight={200} size="lg">Sign in</Heading>
-                <Text fontSize={13}> <Link color="#0066c0" onClick={()=>setFilled(false)}>change?</Link></Text>
+                <Text fontSize={13}>{email} <Link color="#0066c0" onClick={handleToggle}>change?</Link></Text>
                 <FormControl my="1rem" >
                     <HStack justifyContent="space-between">
                         <FormLabel fontSize={12} fontWeight="bold">Enter password</FormLabel>
-                        <FormLabel fontSize={12} fontWeight="bold">Forgot password?</FormLabel>
+                        <Link color="#0066c0" fontSize={12} fontWeight="bold">Forgot password?</Link>
                     </HStack>
                     <Input type='text' size="sm" borderRadius={3} {...register("password", {
                         pattern: "/[0-9]/",
@@ -26,14 +39,8 @@ export default function PasswordComponent({ register, setFilled, handleInputChan
                     })} onChange={handleInputChange}  />
                     {/* {isError && <FormErrorMessage fontSize={12} mt="1">Enter your email or mobile phone number</FormErrorMessage>} */}
                 </FormControl>
-                <Button width="100%" size="sm" backgroundColor="#ffd814" color="black" fontWeight="500" _hover={{ backgroundColor: "#f5d016" }} _active={{ transition: "none" }}>Sign in</Button>
-                <Text fontSize={12} mt="5">
-                    <Highlight
-                        query={['Use', 'Privacy Notice.']}
-                        styles={{ color: "#0066c0" }}
-                    >By continuing, you agree to Amazon's Conditions of Use and Privacy Notice.
-                    </Highlight>
-                </Text>
+                <Button width="100%" type="submit" size="sm" backgroundColor="#ffd814" color="black" fontWeight="500" _hover={{ backgroundColor: "#f5d016" }} _active={{ transition: "none" }}>Sign in</Button>
+                <Checkbox size='sm' py="4" >Keep me signed in</Checkbox>
             </form>
         </FormContainer>
     )

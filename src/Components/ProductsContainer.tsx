@@ -3,6 +3,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { products } from '../data/products';
+import { useNavigate } from 'react-router-dom';
 
 interface Props{
     cards:any[]
@@ -20,6 +21,7 @@ interface Props{
 // }
 
 export default function ProductsContainer({cards}:Props) {
+    const navigate = useNavigate()
     const settings = {
         infinite: false,
         speed: 300,
@@ -66,7 +68,7 @@ export default function ProductsContainer({cards}:Props) {
                           {products.map((product) =>
                               <Box key={product.id} mx="1" p="2" width="8rem" >
                                   <Image src={product.thumbnail} alt={product.title} height="9rem" width="100%"  />
-                                  <Text noOfLines={3} color="#088EC4" style={{ fontSize: "clamp(10px, 4vw, 14px)" }}>{product.title}</Text>
+                                  <Text noOfLines={3} pointerEvents="all" cursor="pointer" onClick={()=>navigate(`/product/${product.id}`)} color="#088EC4" style={{ fontSize: "clamp(10px, 4vw, 14px)" }}>{product.title}</Text>
                                   <Text fontSize={18} mt={2}>&#8377;{product.price.cost} <Badge padding="4px 8px" backgroundColor="#CC0C39" color="white" fontSize="11">{product.price.discount} off</Badge></Text>
                               </Box>
                           )}

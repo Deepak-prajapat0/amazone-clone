@@ -7,19 +7,12 @@ import FormContainer from './FormContainer'
 interface Props{
     register:any;
     errors:any;
-    setFilled:(value:boolean)=>void;
+    handleToggle:()=>void;
     handleInputChange: (e:React.ChangeEvent<HTMLInputElement>)=>void
 }
 
-export default function SignIn({ register, errors, setFilled, handleInputChange }:Props) {
+export default function SignIn({ register, errors, handleToggle, handleInputChange }:Props) {
     const [helpMenu, setHelpMenu] = useState(false)
-    // const [input, setInput] = useState('')
-
-    // const handleInputChange = (e: any) => setInput(e.target.value)
-
-   
-
-    // const isError = input === ''
   return (
     <>
           <FormContainer>
@@ -37,7 +30,7 @@ export default function SignIn({ register, errors, setFilled, handleInputChange 
                       onChange={handleInputChange} />
                       {errors && <FormErrorMessage fontSize={12} mt="1">Enter your email or mobile phone number</FormErrorMessage>}
                   </FormControl>
-                  <Button onClick={()=>setFilled(true)}  width="100%" size="sm" backgroundColor="#ffd814" color="black" fontWeight="500" _hover={{ backgroundColor: "#f5d016" }} _active={{ transition: "none" }}>Continue</Button>
+                  <Button onClick={handleToggle}  width="100%" size="sm" backgroundColor="#ffd814" color="black" fontWeight="500" _hover={{ backgroundColor: "#f5d016" }} _active={{ transition: "none" }}>Continue</Button>
               </form>
               <Text fontSize={12} mt="2" paddingX= "1.5rem">
                       <Highlight
