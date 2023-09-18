@@ -1,21 +1,19 @@
 import axios from "axios";
-import { products } from "../data/products";
+// import { products } from "../data/products";
 
 
 export interface FetchResponse<T> {
-    count: number;
-    next: string | null;
-    results: T[];
+    products: T[];
+}
+export interface FetchResponse2<T> {
+    product: T;
 }
 
 const axiosInstance = axios.create({
-    baseURL: "https://api.rawg.io/api",
-    params: {
-        key: "534d9419fce745878aae6d7679715451"
-    }
+    baseURL: "http://localhost:3001"
 })
 
-class APIClient<T> {
+class APIClient<T>{
     endpoint: string;
 
     constructor(endpoint: string) {
@@ -25,10 +23,12 @@ class APIClient<T> {
     getAll = () => {
         return axiosInstance
             .get<FetchResponse<T>>(this.endpoint)
-            .then(res => res.data);
+            .then(res => res.data.products);
     }
-    get = (id: number | string) => {
-        return products.filter(x=>x.id === id)
+    get = (title: string) => {
+        return axiosInstance
+            .get<FetchResponse2<T>>(this.endpoint + '/' + title)
+            .then((res) => res.data.product);
     };
 }
 

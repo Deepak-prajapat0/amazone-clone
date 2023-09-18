@@ -1,24 +1,27 @@
-import { products } from './../data/products';
+import { useQuery } from '@tanstack/react-query';
+import APIClient from '../services/api-client';
 // import { products } from "../data/products";
 // import useGameQueryStore from "../store";
 
-// interface Product{
-//     id:string|number;
-//     title:string;
-//     description:string;
-//     thumbnail:string;
-//     image_url:string[];
-//     price:{mrp:number;cost:number,discount:string};
-//     features:string[];
-//     productDetails:[{key:string,value:string}];
+interface Product{
+    _id:string;
+    title:string;
+    brand:string
+    description:string;
+    thumbnail:string;
+    image_url:string[];
+    price:{mrp:number;cost:number,discount:string};
+    features:string[];
+    productDetails:[{key:string,value:string}];
     
-// }
-// const apiClient = new APIClient<Product>('/product');
+}
+const apiClient = new APIClient<Product>('/products');
 
-// function getProduct(id:string){
-//     return products.filter(x=>x.id===id)
-// }
 
-const useProduct = (id: string) => ({data:products.filter(x=>x.id === id)})
+const useProduct = (title:string) => useQuery({
+    queryKey: ['product',title],
+    queryFn: () => apiClient.get(title),
+    refetchOnWindowFocus: false,
+});
 
 export default useProduct;

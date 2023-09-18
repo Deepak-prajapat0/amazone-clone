@@ -1,7 +1,7 @@
 import { Button, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, Select, Text } from "@chakra-ui/react";
 import FormContainer from "../Components/FormComponents/FormContainer";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 
@@ -13,8 +13,8 @@ interface SignupFormState {
 }
 
 const initialSignupFormState: SignupFormState = {
-    name:"",
-    phone:0,
+    name: "",
+    phone: 0,
     email: '',
     password: '',
 };
@@ -38,21 +38,21 @@ export default function SignupForm() {
         });
     }
 
-    useEffect(()=>{
-        console.log(location, "hghghgh");
-    },[])
-    const userSignup =(data:any)=>{
-        navigate(location.state?.prevUrl)    
+    // useEffect(()=>{
+    //     console.log(location, "hghghgh");
+    // },[])
+    const userSignup = (data: any) => {
+        navigate(location.state?.prevUrl)
         console.log(data);
-            
+
         reset()
-        
+
     }
 
 
     return (
         <FormContainer>
-            <form style={{ padding: "1.5rem"}} onSubmit={handleSubmit(userSignup)}>
+            <form style={{ padding: "1.5rem" }} onSubmit={handleSubmit(userSignup)}>
                 <Heading>Create Account</Heading>
                 <FormControl my="1rem" >
                     <FormLabel fontSize={12} fontWeight="bold">Your name</FormLabel>
@@ -63,7 +63,7 @@ export default function SignupForm() {
                         })}
                         onChange={handleInputChange} />
                     {/* {errors && <FormErrorMessage fontSize={12} mt="1">Enter your email or mobile phone number</FormErrorMessage>} */}
-                 </FormControl>
+                </FormControl>
                 <FormControl my="1rem" >
                     <FormLabel fontSize={12} fontWeight="bold">Mobile number</FormLabel>
                     <HStack>
@@ -89,18 +89,18 @@ export default function SignupForm() {
                     {/* {errors && <FormErrorMessage fontSize={12} mt="1">Enter your email or mobile phone number</FormErrorMessage>} */}
                 </FormControl>
                 <FormControl my="1rem" >
-                    <FormLabel fontSize={12} fontWeight="bold">Email</FormLabel>
+                    <FormLabel fontSize={12} fontWeight="bold">Password</FormLabel>
                     <Input type='password' size="sm" borderRadius={3} placeholder="At least 6 characters"
                         {...register("password", {
                             // pattern:/[]/,
                             required: "password is required!",
                         })}
                         onChange={handleInputChange} />
-                        <FormHelperText fontSize={12}>Password must be at least 6 characters</FormHelperText>
+                    <FormHelperText fontSize={12}>Password must be at least 6 characters</FormHelperText>
                     {/* {errors && <FormErrorMessage fontSize={12} mt="1">Enter your email or mobile phone number</FormErrorMessage>} */}
                 </FormControl>
                 <Button width="100%" type="submit" size="sm" backgroundColor="#ffd814" color="black" fontWeight="500" _hover={{ backgroundColor: "#f5d016" }} _active={{ transition: "none" }}>Sign up</Button>
-                <Text pt="8" fontSize={14}>Already have an account? <Link to='/signin' style={{ color:"#0066c0",textDecoration:"underline"}} state={location.state}>signin</Link></Text>
+                <Text pt="8" fontSize={14}>Already have an account? <Link to='/signin' style={{ color: "#0066c0", textDecoration: "underline" }} state={location.state}>signin</Link></Text>
             </form>
         </FormContainer>
     )

@@ -1,15 +1,15 @@
-import {Box, Card,Image, CardBody, Heading, VStack, Text, Badge } from '@chakra-ui/react'
+import { Box, Card, Image, CardBody, Heading, VStack, Text, Badge } from '@chakra-ui/react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { products } from '../data/products';
 import { useNavigate } from 'react-router-dom';
+import useProducts from '../hooks/useProducts';
 
-interface Props{
-    cards:any[]
+interface Props {
+    cards: any[]
 }
 // interface Product{
-//     id:string|number;
+//     _id:string;
 //     title:string;
 //     description:string;
 //     thumbnail:string;
@@ -19,64 +19,68 @@ interface Props{
 //     productDetails:[{key:string,value:string}];
 
 // }
-
-export default function ProductsContainer({cards}:Props) {
-    const navigate = useNavigate()
-    const settings = {
-        infinite: false,
-        speed: 300,
-        arrows:true,
-        variableWidth: true,
-        slidesToShow: 5,
-        slidesToScroll: 4,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    arrows: true
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 2,
-                    arrows:false
-                }
+const settings = {
+    infinite: false,
+    speed: 300,
+    arrows: true,
+    variableWidth: true,
+    slidesToShow: 5,
+    slidesToScroll: 4,
+    responsive: [
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                // infinite: true,
+                arrows: true
             }
-        ]
-    };
-  return (
-      <VStack  py={{ base: 4, md: 6 }} gap="2rem" width="100%" overflowX="hidden" zIndex={50}>
-          {cards.map((_item:any,index:number) =>
-              <Card key={index}  width="100vw"  bg="white"  color="black"  variant='outline' borderRadius={0}>
-                  <CardBody padding={{ base: 1, sm: 4 }}>
-                      {index === 0 && <Heading size="md" py='4'>Revamp your home in style</Heading>}
-                      {index === 1 && <Heading size="md" py='4'>Up to 60% off | Styles for men</Heading>}
-                      {index === 2 && <Heading size="md" py='4'>Appliances | Up to 55% off</Heading>}
-                      <Slider {...settings}  className='productStack' >
-                          {products.map((product) =>
-                              <Box key={product.id} mx="1" p="2" width="8rem" >
-                                  <Image src={product.thumbnail} alt={product.title} height="9rem" width="100%"  />
-                                  <Text noOfLines={3} pointerEvents="all" cursor="pointer" onClick={()=>navigate(`/product/${product.id}`)} color="#088EC4" style={{ fontSize: "clamp(10px, 4vw, 14px)" }}>{product.title}</Text>
-                                  <Text fontSize={18} mt={2}>&#8377;{product.price.cost} <Badge padding="4px 8px" backgroundColor="#CC0C39" color="white" fontSize="11">{product.price.discount} off</Badge></Text>
-                              </Box>
-                          )}
-                          
-                      </Slider>
-                  </CardBody>
-              </Card>
-          )}
-      </VStack>
-  )
+        },
+        {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2
+            }
+        },
+        {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 2,
+                arrows: false
+            }
+        }
+    ]
+};
+
+export default function ProductsContainer({ cards }: Props) {
+
+    const { data } = useProducts()
+
+    const navigate = useNavigate()
+
+    return (
+        <VStack py={{ base: 4, md: 6 }} gap="2rem" width="100%" overflowX="hidden" zIndex={50}>
+            {cards.map((_item: any, index: number) =>
+                <Card key={index} width="100vw" bg="white" color="black" variant='outline' borderRadius={0}>
+                    <CardBody padding={{ base: 1, sm: 4 }}>
+                        {index === 0 && <Heading size="md" py='4'>Revamp your home in style</Heading>}
+                        {index === 1 && <Heading size="md" py='4'>Up to 60% off | Styles for men</Heading>}
+                        {index === 2 && <Heading size="md" py='4'>Appliances | Up to 55% off</Heading>}
+                        <Slider {...settings} className='productStack' >
+                            {data?.map((product, index: number) =>
+                                <Box key={index} mx="1" p="2" width="8rem" >
+                                    <Image src={product.thumbnail} alt={product.title} height="9rem" width="100%" />
+                                    <Text noOfLines={3} pointerEvents="all" cursor="pointer" onClick={() => navigate(`/product/${product.title}`)} color="#088EC4" style={{ fontSize: "clamp(10px, 4vw, 14px)" }}>{product.title}</Text>
+                                    <Text fontSize={18} mt={2}>&#8377;{product.price.cost} <Badge padding="4px 8px" backgroundColor="#CC0C39" color="white" fontSize="11">{product.price.discount} off</Badge></Text>
+                                </Box>
+                            )}
+
+                        </Slider>
+                    </CardBody>
+                </Card>
+            )}
+        </VStack>
+    )
 }
