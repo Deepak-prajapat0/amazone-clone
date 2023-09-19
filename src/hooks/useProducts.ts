@@ -21,7 +21,8 @@ const apiClient = new APIClient<Product>('/products');
 const useProducts = () => useQuery({
     queryKey: ['products'],
     queryFn: () => apiClient.getAll(),
-    staleTime: 14800000
+    staleTime: 60*60*1000,
+    refetchOnWindowFocus: false,
 });
 
 export default useProducts;

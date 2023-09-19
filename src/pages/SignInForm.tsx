@@ -1,5 +1,5 @@
 import { AbsoluteCenter, Box, Button, Divider } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SignIn from '../Components/FormComponents/SignIn';
 import PasswordComponent from '../Components/FormComponents/PasswordComponent';
 import { useForm } from 'react-hook-form';
@@ -15,7 +15,6 @@ const initialLoginFormState: LoginFormState = {
     email: '',
     password: '',
 };
-
 
 export default function SignInForm() {
     const [filled,setFilled]= useState(false)
@@ -41,6 +40,12 @@ export default function SignInForm() {
             [name]: value,
         });
     };
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+           navigate('/')
+        }
+    },[])
 
 
     return (

@@ -5,7 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export default function Header() {
     const navigate = useNavigate()
-
+    const user = localStorage.getItem("token")
+    const email = localStorage.getItem("user")
     return (
         <header style={{ width: "100%", position: "fixed", zIndex: "50", backgroundColor: "#131921", color: "white" }}>
             <HStack p="2" justifyContent="space-between">
@@ -19,16 +20,15 @@ export default function Header() {
                     <Input type='text' paddingLeft={4} placeholder='Search Amazon.in' bg={"white"} border="none" borderRadius={"5px"} outline="none" _focusVisible={{ border: "none" }} _focus={{ borderColor: "transparent", outline: "2.5px solid #FEBD69", outlineOffset: "0px" }} />
                 </InputGroup>
                 <HStack gap="4" px="1" fontWeight={800} fontSize="10px">
-                    <VStack width="7.5rem" gap=".5">
-                        <Text width="100%" as="span">Hello, sign in</Text>
+                    <VStack width="100%" gap=".5">
+                        {user ? 
+                            <Text width="fit-content" fontSize={10} as="span">{email}</Text>:
+                            <Text width="100%" as="span">Hello, sign in</Text>
+                        }
                         <HStack fontSize={13}>
                             <span>Account & Lists</span>
-                            <UserMenu />
+                            <UserMenu user={user!} />
                         </HStack>
-                    </VStack>
-                    <VStack gap=".5">
-                        <Text width="100%" as="span">Returns</Text>
-                        <span style={{ fontSize: "12px" }}>& Orders</span>
                     </VStack>
                     <Box display="flex" alignItems="end" style={{ fontSize: "2.1rem", cursor: "pointer" }} onClick={() => navigate('/cart')}><i><AiOutlineShoppingCart /></i> <span style={{ fontSize: "12px" }}>cart</span></Box>
                 </HStack>

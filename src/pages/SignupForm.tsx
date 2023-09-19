@@ -1,8 +1,11 @@
 import { Button, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, Select, Text } from "@chakra-ui/react";
 import FormContainer from "../Components/FormComponents/FormContainer";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { userRegister } from "../hooks/userHooks";
+import useGetCart from "../hooks/cartapi";
 
 
 interface SignupFormState {
@@ -19,7 +22,10 @@ const initialSignupFormState: SignupFormState = {
     password: '',
 };
 
+
 export default function SignupForm() {
+    const registrationMutation = useMutation(userRegister)
+
     const location = useLocation()
     const navigate = useNavigate()
     const {
@@ -38,16 +44,24 @@ export default function SignupForm() {
         });
     }
 
-    // useEffect(()=>{
-    //     console.log(location, "hghghgh");
-    // },[])
-    const userSignup = (data: any) => {
-        navigate(location.state?.prevUrl)
-        console.log(data);
-
+    const userSignup = async(data:any) => {
+        try {
+            await registrationMutation.mutateAsync(data).then((res:any)=>{
+                localStorage.setItem("token", res.user.token)
+                localStorage.setItem("user",res.user.email)
+                navigate(location.state?.prevUrl)
+            })
+        } catch (error) {
+            console.error(error);
+        }
         reset()
-
     }
+
+    useEffect(()=>{
+        if (localStorage.getItem('token')) {
+            navigate('/')
+        }
+    },[])
 
 
     return (
