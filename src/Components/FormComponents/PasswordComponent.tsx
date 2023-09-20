@@ -4,6 +4,7 @@ import { FieldValues, UseFormHandleSubmit } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { userLogin } from "../../hooks/userHooks";
+// import useToken from "../../services/auth-headers";
 
 interface Props {
     email:string;
@@ -17,13 +18,13 @@ interface Props {
 
 export default function PasswordComponent({email, register, handleToggle, handleInputChange,handleSubmit }:Props) {
     const loginMutation = useMutation(userLogin)
+    // const {setToken } = useToken()
     const navigate = useNavigate()
     const location = useLocation()
 
     const formSubmit = async(data:any)=>{
         await loginMutation.mutateAsync(data).then(res=>{
             console.log(res);
-            
             localStorage.setItem("token", res.token)
             localStorage.setItem("user",res.user.email)
             navigate(location.state?.prevUrl)

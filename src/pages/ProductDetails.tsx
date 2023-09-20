@@ -5,31 +5,21 @@ import { useState } from "react";
 import { TfiTruck } from "react-icons/tfi";
 import { BsBoxSeam, BsCashCoin } from "react-icons/bs";
 import { GiLaurelsTrophy } from "react-icons/gi";
-import APIClient from "../services/api-client";
-import { useMutation } from "@tanstack/react-query";
+import useAddCart from "../hooks/useAddCart";
 // import {mutateAsync} from "../hooks/updateCart";
 
 export default function ProductDetails() {
 
-  const apiClient = new APIClient('/cart')
-
-  const cartMutation=(data:any) => useMutation(apiClient.updateCart, {
-    onSuccess: () => {
-      console.log("succedd",data);
-
-    }
-  })
-
-
   const { title } = useParams()
+  const addCart = useAddCart()
+  const { data, error, isLoading } = useProduct(title!)
+  const [image, setImage] = useState(0)
+
 
   if (!title) {
     return
   }
-  const { data, error, isLoading } = useProduct(title!)
 
-  // const update = updateUserCart();
-  const [image, setImage] = useState(0)
   if (isLoading) {
     return <Spinner />
   }
@@ -47,9 +37,9 @@ export default function ProductDetails() {
         <Image src={data.image_url[image]} minWidth="20rem" />
       </Box>
       <Show below="md">
-        <VStack width="18rem" h="max-content" p="4" border="1px solid lightgray" borderRadius="8">
+        <VStack maxWidth="15rem" h="max-content" p="4" border="1px solid lightgray" borderRadius="8">
           <Text fontSize="14" fontWeight="bold"><span style={{ color: "#307AC6" }}>Free delivery</span> Monday, 28 October.Order within 19hrs.</Text>
-          <Button size="sm" h="9" width="80%" borderRadius="16" bg="#FFD814" fontWeight="light" >Add to Cart</Button>
+          <Button size="sm" h="9" width="80%" borderRadius="16" bg="#FFD814" fontWeight="light" onClick={() => addCart.mutate({id:data._id})} >Add to Cart</Button>
 
         </VStack>
       </Show>
@@ -101,7 +91,7 @@ export default function ProductDetails() {
       <Show above="md">
         <VStack maxWidth="15rem" h="max-content" p="4" border="1px solid lightgray" borderRadius="8">
           <Text fontSize="14" fontWeight="bold"><span style={{ color: "#307AC6" }}>Free delivery</span> Monday, 28 October.Order within 19hrs.</Text>
-          <Button size="sm" h="9" width="80%" borderRadius="16" bg="#FFD814" fontWeight="light" onClick={()=> cartMutation(data._id)} >Add to Cart</Button>
+          <Button size="sm" h="9" width="80%" borderRadius="16" bg="#FFD814" fontWeight="light" onClick={() => addCart.mutate({ id: data._id })} >Add to Cart</Button>
 
         </VStack>
       </Show>

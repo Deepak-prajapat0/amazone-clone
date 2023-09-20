@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { userRegister } from "../hooks/userHooks";
-import useGetCart from "../hooks/cartapi";
+// import useGetCart from "../hooks/cartapi";
 
 
 interface SignupFormState {

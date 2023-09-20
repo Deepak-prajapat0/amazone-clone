@@ -1,6 +1,6 @@
 import axios from "axios";
+import { Cart } from "../hooks/getCart";
 // import { products } from "../data/products";
-
 
 export interface FetchResponse<T> {
     products: T[];
@@ -13,11 +13,39 @@ interface Response<T> {
     msg: string;
     user: T;
 }
+interface CartResponse {
+    cart: Cart;
+}
 
+let abortController:any;
 const axiosInstance = axios.create({
     baseURL: "http://localhost:3001",
-    headers:{"x-api-key":localStorage.getItem("token")}
+    headers: {
+        "Content-type": "application/json",
+    },
 })
+
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers["x-api-key"] = token;
+        }
+        if (abortController) {
+            abortController.abort();
+        }
+
+        // Create a new AbortController for this request
+        abortController = new AbortController();
+        const signal = abortController.signal;
+        config.signal = signal;
+        // con = signal
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 
 class APIClient<T>{
@@ -42,12 +70,16 @@ class APIClient<T>{
         .then((res)=>console.log(res))
     }
     userCart=()=>{
-        return axiosInstance.get(this.endpoint)
-        .then(res=>res.data)
+        return axiosInstance.get<CartResponse>(this.endpoint)
+        .then(res=>res.data.cart)
+    }
+    addToCart=(data:any)=>{
+        return axiosInstance.post(this.endpoint, data)
+        .then(res=>res.data.cart)
     }
     updateCart=(data:any)=>{
-        return axiosInstance.put(this.endpoint+'/cart', data)
-        .then(res=>res.data)
+        return axiosInstance.put(this.endpoint, data)
+        .then(res=>res.data.cart)
     }
 }
 

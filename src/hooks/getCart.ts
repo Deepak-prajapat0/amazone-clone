@@ -1,28 +1,44 @@
 import APIClient from '../services/api-client';
 import { useQuery } from '@tanstack/react-query';
 
+export interface Cart{
+    _id:string;
+    userId:string;
+    cartItems:[
+        {
+            productId:{
+                _id:string;
+                title:string;
+                brand:string;
+                description:string;
+                price:{
+                    mrp:number;
+                    cost:number;
+                    discount:string;
+                }
+                thumbnail:string;
+                image_url:string[];
+                features:string[];
+                productDetails:[
+                    {
+                        key:string;
+                        value:string;
+                    }
+                ]
+            },
+            quantity:number
+        }
+    ],
+    totalPrice:number;
+    totalItems:number;
+}
 
-// interface User {
-//     name: string;
-//     phone: number;
-//     email: string;
-//     password: string;
 
-// }
-// interface Response {
-//     status: boolean;
-//     msg: string;
-//     user: any
-// }
+const apiClient = new APIClient<Cart>('/cart');
 
-const apiClient = new APIClient('/cart');
-const token = localStorage.getItem('token');
-console.log(token);
-
-
-const useGetCart = () => useQuery({
-    queryKey: ['cart',token],
-    queryFn: () => apiClient.userCart(),
+const useGetCart = (token:string) => useQuery({
+    queryKey: ['cart', token],
+    queryFn: apiClient.userCart,
     enabled: !!token,
     refetchOnWindowFocus: false,
 });

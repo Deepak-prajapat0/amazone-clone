@@ -5,7 +5,7 @@ import ErrorPage from "./pages/ErrorPage";
 import SignInForm from "./pages/SignInForm";
 import SignupForm from "./pages/SignupForm";
 import ProductDetails from "./pages/ProductDetails";
-// import Cart from "./pages/Cart";
+import Cart from "./pages/Cart";
 
 const router = createBrowserRouter([
     {
@@ -17,8 +17,7 @@ const router = createBrowserRouter([
             { path: '/signin', element: <SignInForm /> },
             { path: '/signup', element: <SignupForm /> },
             { path: '/product/:title', element: <ProductDetails /> },
-            // { path: '/cart', element: <Cart /> },
-            // { path: 'game/:slug', element: <GameDetailPage /> }
+            { path: '/cart', element: <Cart /> },
         ]
     }
 ])
