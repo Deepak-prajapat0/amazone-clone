@@ -1,31 +1,13 @@
 import APIClient from '../services/api-client';
 import { useQuery } from '@tanstack/react-query';
+import { Product } from './useProduct';
 
 export interface Cart{
     _id:string;
     userId:string;
     cartItems:[
         {
-            productId:{
-                _id:string;
-                title:string;
-                brand:string;
-                description:string;
-                price:{
-                    mrp:number;
-                    cost:number;
-                    discount:string;
-                }
-                thumbnail:string;
-                image_url:string[];
-                features:string[];
-                productDetails:[
-                    {
-                        key:string;
-                        value:string;
-                    }
-                ]
-            },
+            productId:Product
             quantity:number
         }
     ],

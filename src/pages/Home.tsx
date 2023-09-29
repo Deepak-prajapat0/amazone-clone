@@ -4,19 +4,10 @@ import './Home.css';
 import { section1, section2, appliances } from "../data/homeData";
 import GridOnLarge from "../Components/GridOnLarge";
 import ProductsContainer from "../Components/ProductsContainer";
-import useProducts from "../hooks/useProducts";
-import { useEffect } from "react";
 
 export default function Main() {
 
   const cards = [section1, section2, appliances];
-
-  const { data } = useProducts()
-
-  useEffect(() => {
-    console.log(data);
-
-  }, [])
 
   const bannerImage = [
     "https://images-eu.ssl-images-amazon.com/images/G/31/img21/Wireless/Shreyansh/BAU/Unrexc/D70978891_INWLD_BAU_Unrec_Uber_PC_Hero_3000x1200._CB594707876_.jpg",

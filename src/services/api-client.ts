@@ -1,5 +1,7 @@
 import axios from "axios";
 import { Cart } from "../hooks/getCart";
+
+
 // import { products } from "../data/products";
 
 export interface FetchResponse<T> {
@@ -17,9 +19,10 @@ interface CartResponse {
     cart: Cart;
 }
 
+const url = "http://localhost:3001"
 let abortController:any;
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:3001",
+    baseURL:url ,
     headers: {
         "Content-type": "application/json",
     },
@@ -39,10 +42,20 @@ axiosInstance.interceptors.request.use(
         abortController = new AbortController();
         const signal = abortController.signal;
         config.signal = signal;
-        // con = signal
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+);
+
+
+axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 500 || error.response && error.response.status === 401) {
+             localStorage.clear()
+        }
         return Promise.reject(error);
     }
 );
@@ -69,17 +82,35 @@ class APIClient<T>{
         return axiosInstance.post<Response<T>>(this.endpoint+'/register',data)
         .then((res)=>console.log(res))
     }
+    logout=()=>{
+        return axiosInstance.post(this.endpoint).then(res=>{
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            res.data
+        })
+    }
     userCart=()=>{
         return axiosInstance.get<CartResponse>(this.endpoint)
-        .then(res=>res.data.cart)
+        .then(res=>{
+            localStorage.setItem('cart', JSON.stringify(res.data.cart))
+            return res.data.cart
+        })
     }
     addToCart=(data:any)=>{
         return axiosInstance.post(this.endpoint, data)
-        .then(res=>res.data.cart)
+        .then(res=>res.data)
     }
     updateCart=(data:any)=>{
         return axiosInstance.put(this.endpoint, data)
-        .then(res=>res.data.cart)
+            .then(res => {
+                localStorage.setItem('cart', JSON.stringify(res.data.cart))
+                return res.data
+            })
+    }
+    payment=(data:any)=>{
+        return axiosInstance.post(this.endpoint ,data)
+        .then(res=>res.data)
+        .catch(error=>error.message)
     }
 }
 

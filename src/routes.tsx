@@ -6,6 +6,7 @@ import SignInForm from "./pages/SignInForm";
 import SignupForm from "./pages/SignupForm";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 
 const router = createBrowserRouter([
     {
@@ -16,8 +17,10 @@ const router = createBrowserRouter([
             { index: true, element: <Home /> },
             { path: '/signin', element: <SignInForm /> },
             { path: '/signup', element: <SignupForm /> },
-            { path: '/product/:title', element: <ProductDetails /> },
+            { path: '/product/:id', element: <ProductDetails /> },
             { path: '/cart', element: <Cart /> },
+            { path: '/cart/checkout', element: <Checkout /> },
+
         ]
     }
 ])

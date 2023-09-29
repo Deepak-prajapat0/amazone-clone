@@ -14,11 +14,13 @@ interface Response{
     user:any
 }
 
+const url ='http://localhost:3001';
+
 const userRegister = async(data:User) => {
-    return await axios.post < Response>('http://localhost:3001/register',data).then(res => res.data)  
+    return await axios.post < Response>(`${url}/register`,data).then(res => res.data)  
 }
 const userLogin = async(data:any) => {
-    return  await axios.post('http://localhost:3001/login',data).then(res =>  res.data)  
+    return  await axios.post(`${url}/login`,data).then(res =>  res.data)  
 }
 
 export {userRegister,userLogin};

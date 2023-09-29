@@ -1,22 +1,52 @@
 import { useParams } from "react-router-dom";
 import useProduct from "../hooks/useProduct";
-import { Box, Button, Divider, HStack, Heading, Image, ListItem, Show, Spinner, Text, UnorderedList, VStack } from "@chakra-ui/react";
+import { Box, Button, Divider, HStack, Heading, Image, ListItem, Show, Spinner, Text, UnorderedList, VStack, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { TfiTruck } from "react-icons/tfi";
 import { BsBoxSeam, BsCashCoin } from "react-icons/bs";
 import { GiLaurelsTrophy } from "react-icons/gi";
 import useAddCart from "../hooks/useAddCart";
-// import {mutateAsync} from "../hooks/updateCart";
+
 
 export default function ProductDetails() {
-
-  const { title } = useParams()
+  const [loading, setLoading] = useState(false)
+  const { id } = useParams()
   const addCart = useAddCart()
-  const { data, error, isLoading } = useProduct(title!)
+  const { data, error, isLoading } = useProduct(id!)
   const [image, setImage] = useState(0)
 
 
-  if (!title) {
+  const toast = useToast({
+    // position: 'top',
+    title: 'dfgdfgdfgdfgdfg',
+    status: 'success',
+    position:'bottom-right',
+    containerStyle: {
+      maxWidth: '100%',
+    },
+    duration: 3000, // Toast duration in milliseconds
+    isClosable: true, // Allow the user to close the toast
+  })
+
+
+  const addProductInCart = async (product: any) => {
+    setLoading(true)
+    const res = await addCart.mutateAsync({ productId: product._id },{onError:()=>{
+      toast({ title: "Please login again",status:"error"})
+      setLoading(false)
+    }})
+    if (res) {
+      setLoading(false)
+      toast({ title: res.msg })
+    }
+    else{
+      setLoading(false)
+      toast({title:"something wrong"})
+    }
+  }
+
+
+  if (!id) {
     return
   }
 
@@ -39,7 +69,7 @@ export default function ProductDetails() {
       <Show below="md">
         <VStack maxWidth="15rem" h="max-content" p="4" border="1px solid lightgray" borderRadius="8">
           <Text fontSize="14" fontWeight="bold"><span style={{ color: "#307AC6" }}>Free delivery</span> Monday, 28 October.Order within 19hrs.</Text>
-          <Button size="sm" h="9" width="80%" borderRadius="16" bg="#FFD814" fontWeight="light" onClick={() => addCart.mutate({id:data._id})} >Add to Cart</Button>
+          <Button size="sm" h="9" width="80%" borderRadius="16" colorScheme="yellow" bg="#FFD814" fontWeight="light" isLoading={loading} loadingText='Adding ...' isDisabled={data.stock === 0} onClick={() => addProductInCart(data)} >Add to Cart</Button>
 
         </VStack>
       </Show>
@@ -75,7 +105,7 @@ export default function ProductDetails() {
             <span style={{ fontSize: "12px" }}>Top brand</span>
           </VStack>
         </HStack>
-        <Divider/>
+        <Divider />
         <VStack mt="12" >
           <Heading size="md" textAlign="left" w="90%">Features :</Heading>
           <UnorderedList spacing={1}>
@@ -91,7 +121,7 @@ export default function ProductDetails() {
       <Show above="md">
         <VStack maxWidth="15rem" h="max-content" p="4" border="1px solid lightgray" borderRadius="8">
           <Text fontSize="14" fontWeight="bold"><span style={{ color: "#307AC6" }}>Free delivery</span> Monday, 28 October.Order within 19hrs.</Text>
-          <Button size="sm" h="9" width="80%" borderRadius="16" bg="#FFD814" fontWeight="light" onClick={() => addCart.mutate({ id: data._id })} >Add to Cart</Button>
+          <Button size="sm" h="9" width="80%" colorScheme='yellow' bg="#FFD814" borderRadius="16"  fontWeight="light" isLoading={loading} loadingText='Adding ...' isDisabled={data.stock === 0} onClick={() => addProductInCart(data)} >Add to Cart</Button>
 
         </VStack>
       </Show>

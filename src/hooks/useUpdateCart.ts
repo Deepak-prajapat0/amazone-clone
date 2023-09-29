@@ -6,12 +6,8 @@ import { Cart } from "./getCart";
 const apiClient = new APIClient<Cart>('/cart')
 
 const useUpdateCart = () => {
-    const queryClient = useQueryClient();
     return useMutation({
         mutationFn: apiClient.updateCart,
-        onSuccess: data => {
-            queryClient.setQueryData(['cart'], data)
-        },
     })
 }
 

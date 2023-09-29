@@ -1,18 +1,18 @@
-import { Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react'
-import { useState } from 'react'
-import { AiFillCaretDown } from 'react-icons/ai'
-import SIgnInButton from '../CustomComponent/SIgnInButton'
+import { Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
+import { useState } from 'react';
+import { AiFillCaretDown } from 'react-icons/ai';
+import SIgnInButton from '../CustomComponent/SIgnInButton';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
+import APIClient from '../../services/api-client';
 
 interface Props{
     user:string; 
 }
 
 export default function UserMenu({user}:Props) {
-    const queryClient = useQueryClient()
     const [open, setOpen] = useState(false)
     const navigate = useNavigate()
+    const api = new APIClient('/logout')
 
     // const 
     return (
@@ -21,10 +21,9 @@ export default function UserMenu({user}:Props) {
             <MenuList onMouseLeave={() => setOpen(false)} zIndex={50} color="black">
                 {/* MenuItems are not rendered unless Menu is open */}
                 {user ? <Button onClick={()=>{
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    queryClient.clear();
-                    navigate('/')
+                    api.logout().then(()=>{
+                        navigate('/')
+                    })
                 }}>Logout</Button> : <SIgnInButton />}
                 <MenuItem>Your Orders</MenuItem>
                 <MenuItem>Your Wish List</MenuItem>
