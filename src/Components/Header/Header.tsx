@@ -2,11 +2,24 @@ import { Box, HStack, Image, Input, InputGroup, InputRightElement, Text, VStack 
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import UserMenu from './UserMenu';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../features/store';
 
 export default function Header() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const cart = useAppSelector(state=>state.cart.cart)
     const user = localStorage.getItem("token")
     const email = localStorage.getItem("user")
+    let localCart = localStorage.getItem('cart');
+    if(localCart){
+        localCart = JSON.parse(localCart).totalItems
+    }
+    
+
+    // const cart = selector((state: any) => state.cart)
+
+
+
+ 
     return (
         <header style={{ width: "100%", position: "fixed", zIndex: "50", backgroundColor: "#131921", color: "white" }}>
             <HStack p="2" justifyContent="space-between">
@@ -30,21 +43,11 @@ export default function Header() {
                             <UserMenu user={user!} />
                         </HStack>
                     </VStack>
-                    <Box display="flex" alignItems="end" style={{ fontSize: "2.1rem", cursor: "pointer" }} onClick={() => navigate('/cart')}><i><AiOutlineShoppingCart /></i> <span style={{ fontSize: "12px" }}>cart</span></Box>
+                    {/* || JSON.parse(localStorage.getItem('cart')||'')?.totalItems */}
+                    <Box display="flex" alignItems="end" style={{ fontSize: "2.1rem", cursor: "pointer" }} onClick={() => navigate('/cart')}> <span style={{ position: 'relative' }} ><span className='count' style={{ position: 'absolute', fontSize: "12px" }}>{cart && cart.totalItems || localCart || 0}</span> <i><AiOutlineShoppingCart /></i></span> <span style={{ fontSize: "12px" }}>cart</span></Box>
                 </HStack>
             </HStack>
         </header>
     )
 }
 
-
-{/* <InputLeftElement ml=".75" width="fit-content">
-                        <Select placeholder='Select option' width="fit-content" >
-                            <option value='option1' defaultChecked>All category</option>
-                            <option value='option2'>Appliances</option>
-                            <option value='option3'>Baby</option>
-                            <option value='option3'>Beauty</option>
-                            <option value='option3'>Books</option>
-                            <option value='option3'>Clothing</option>
-                        </Select>
-                    </InputLeftElement> */}

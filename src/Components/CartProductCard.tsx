@@ -1,7 +1,7 @@
-import { Box, Button, Divider, HStack, Heading, Image, Select, Stack, Text, VStack, useToast } from "@chakra-ui/react";
+import { Box, Button, Divider, HStack, Heading, Image, Select, Stack, Text, VStack } from "@chakra-ui/react";
 import { Product } from "../hooks/useProduct";
 import { useState } from "react";
-import useUpdateCart from "../hooks/useUpdateCart";
+// import { updateUserCart } from "../features/cart/cartSlice";
 
 interface CartProduct {
     productId: Product
@@ -9,32 +9,30 @@ interface CartProduct {
 }
 interface Props {
     item: CartProduct;
-    updateCart:any
-    updateQuantity: (product:Product,qty:number)=>void
+    updateQuantity: (productId: any,qty: number)=>void
 }
 
 
-export default function CartProductCard({ item, updateCart, updateQuantity }: Props) {
+export default function CartProductCard({ item, updateQuantity }: Props) {
     const[quantity,setQuantity]= useState(item.quantity)
     const [loading, setLoading] = useState(false)
  
 
-    const toast = useToast({
-        title: 'dfgdfgdfgdfgdfg',
-        status: 'success',
-        position: 'bottom-right',
-        containerStyle: {
-            maxWidth: '100%',
-        },
-        duration: 3000,
-        isClosable: true,
-    })
+    // const toast = useToast({
+    //     title: 'dfgdfgdfgdfgdfg',
+    //     status: 'success',
+    //     position: 'bottom-right',
+    //     containerStyle: {
+    //         maxWidth: '100%',
+    //     },
+    //     duration: 3000,
+    //     isClosable: true,
+    // })
 
     const onChangeQuantity = async (qty:number ,product:Product = item.productId) => {
         // setLoading(true)
         setQuantity(+qty);
         updateQuantity(product,qty)
-
     }
 
 

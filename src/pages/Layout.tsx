@@ -8,19 +8,20 @@ import NavHeader from '../Components/Header/NavHeader';
 export default function Layout() {
   const { pathname } = useLocation();
 
-
   useEffect(() => {
     window.scrollTo(0, 0);    
   }, [pathname]);
 
   return (
     <div>
+      {/* <Provider store={store}> */}
         <Header />
       <Box paddingTop="4rem" minHeight= "100vh" >
       {pathname !== '/signin' && pathname !=='/signup'  &&<NavHeader/>}
-        <Outlet />
+          <Outlet />
       </Box>
       {pathname !== '/signin' && pathname !== '/signup' && <Footer />}
+        {/* </Provider> */}
     </div>
   )
 }

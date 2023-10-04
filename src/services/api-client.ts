@@ -1,11 +1,12 @@
 import axios from "axios";
-import { Cart } from "../hooks/getCart";
+import { Product } from "../models/ProductModel";
+
 
 
 // import { products } from "../data/products";
 
-export interface FetchResponse<T> {
-    products: T[];
+export interface FetchResponse{
+    products: Product[];
 }
 export interface FetchResponse2<T> {
     product: T;
@@ -15,9 +16,9 @@ interface Response<T> {
     msg: string;
     user: T;
 }
-interface CartResponse {
-    cart: Cart;
-}
+// interface CartResponse {
+//     cart: Cart;
+// }
 
 const url = "http://localhost:3001"
 let abortController:any;
@@ -70,8 +71,7 @@ class APIClient<T>{
 
     getAll = () => {
         return axiosInstance
-            .get<FetchResponse<T>>(this.endpoint)
-            .then(res => res.data.products);
+            .get<FetchResponse>(this.endpoint)
     }
     get = (title: string) => {
         return axiosInstance
@@ -84,28 +84,18 @@ class APIClient<T>{
     }
     logout=()=>{
         return axiosInstance.post(this.endpoint).then(res=>{
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            localStorage.clear()
             res.data
         })
     }
     userCart=()=>{
-        return axiosInstance.get<CartResponse>(this.endpoint)
-        .then(res=>{
-            localStorage.setItem('cart', JSON.stringify(res.data.cart))
-            return res.data.cart
-        })
+        return axiosInstance.get(this.endpoint)
     }
     addToCart=(data:any)=>{
         return axiosInstance.post(this.endpoint, data)
-        .then(res=>res.data)
     }
     updateCart=(data:any)=>{
         return axiosInstance.put(this.endpoint, data)
-            .then(res => {
-                localStorage.setItem('cart', JSON.stringify(res.data.cart))
-                return res.data
-            })
     }
     payment=(data:any)=>{
         return axiosInstance.post(this.endpoint ,data)

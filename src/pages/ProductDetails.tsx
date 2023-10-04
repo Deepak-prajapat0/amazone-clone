@@ -5,13 +5,14 @@ import { useState } from "react";
 import { TfiTruck } from "react-icons/tfi";
 import { BsBoxSeam, BsCashCoin } from "react-icons/bs";
 import { GiLaurelsTrophy } from "react-icons/gi";
-import useAddCart from "../hooks/useAddCart";
+import { useAppDispatch } from "../features/store";
+import { addToCart } from "../features/cart/cartSlice";
 
 
 export default function ProductDetails() {
+  const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(false)
   const { id } = useParams()
-  const addCart = useAddCart()
   const { data, error, isLoading } = useProduct(id!)
   const [image, setImage] = useState(0)
 
@@ -31,18 +32,15 @@ export default function ProductDetails() {
 
   const addProductInCart = async (product: any) => {
     setLoading(true)
-    const res = await addCart.mutateAsync({ productId: product._id },{onError:()=>{
-      toast({ title: "Please login again",status:"error"})
-      setLoading(false)
-    }})
-    if (res) {
+    dispatch(addToCart({productId:product._id})).then((res:any)=>{
+      localStorage.setItem('cart', JSON.stringify(res.payload.cart))
       setLoading(false)
       toast({ title: res.msg })
-    }
-    else{
+    })
+    .catch(()=>{
       setLoading(false)
-      toast({title:"something wrong"})
-    }
+      toast({ title: "something wrong" })
+    })
   }
 
 

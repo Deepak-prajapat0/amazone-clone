@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/api-client";
-import { Cart } from "./getCart";
+import { Cart } from "../models/CartModel";
+
 
 const apiClient = new APIClient<Cart>('/cart')
 

@@ -3,22 +3,14 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
-import useProducts from '../hooks/useProducts';
+import { useEffect, useState } from 'react';
+import { useAppDispatch } from '../features/store';
+import { getAllProducts } from '../features/product/productSlice';
 
 interface Props {
-    cards: any[]
+    cards:any
 }
-// interface Product{
-//     _id:string;
-//     title:string;
-//     description:string;
-//     thumbnail:string;
-//     image_url:string[];
-//     price:{mrp:number;cost:number,discount:string};
-//     features:string[];
-//     productDetails:[{key:string,value:string}];
 
-// }
 const settings = {
     infinite: false,
     speed: 300,
@@ -55,8 +47,19 @@ const settings = {
 };
 
 export default function ProductsContainer({ cards }: Props) {
+    const [products,setProducts]= useState([])
+    const dispatch = useAppDispatch()
 
-    const { data } = useProducts()
+    useEffect(()=>{
+        dispatch(getAllProducts())
+        .then((res:any)=>{
+            console.log(res)
+            setProducts(res.payload.products)
+        })
+            .catch((error) => {
+                console.error('Error fetching cart:', error);
+            });
+    },[])
 
     const navigate = useNavigate()
 
@@ -69,15 +72,16 @@ export default function ProductsContainer({ cards }: Props) {
                         {index === 1 && <Heading size="md" py='4'>Up to 60% off | Styles for men</Heading>}
                         {index === 2 && <Heading size="md" py='4'>Appliances | Up to 55% off</Heading>}
                         <Slider {...settings} className='productStack' >
-                            {data?.map((product, index: number) =>
+                            {products.map((product:any, index: number) =>
                                 <Box key={index} mx="1" p="2" width="8rem" >
                                     <Image src={product.thumbnail} alt={product.title} height="9rem" width="100%" />
                                     <Text noOfLines={3} pointerEvents="all" cursor="pointer" _hover={{textDecoration:'underline'}} onClick={() => navigate(`/product/${product._id}`)} color="#088EC4" style={{ fontSize: "clamp(10px, 4vw, 14px)" }}>{product.title}</Text>
                                     <Text fontSize={18} mt={2}>&#8377;{product.price.cost} <Badge padding="4px 8px" backgroundColor="#CC0C39" color="white" fontSize="11">{product.price.discount} off</Badge></Text>
                                 </Box>
                             )}
-
+                            
                         </Slider>
+                        {/* {JSON.stringify(products)} */}
                     </CardBody>
                 </Card>
             )}

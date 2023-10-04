@@ -4,18 +4,22 @@ import { FieldValues, UseFormHandleSubmit } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { userLogin } from "../../hooks/userHooks";
+import { useAppDispatch } from "../../features/store";
+import { getUserCart } from "../../features/cart/cartSlice";
 
 interface Props {
-    email:string;
+    email: string;
     register: any;
     errors: any;
     handleToggle: () => void;
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleSubmit:UseFormHandleSubmit<FieldValues>
+    handleSubmit: UseFormHandleSubmit<FieldValues>
 }
 
 
-export default function PasswordComponent({email, register, handleToggle, handleInputChange,handleSubmit }:Props) {
+export default function PasswordComponent({ email, register, handleToggle, handleInputChange, handleSubmit }: Props) {
+    const dispatch= useAppDispatch();
+    
     const loginMutation = useMutation(userLogin)
     const navigate = useNavigate()
     const location = useLocation()
@@ -29,20 +33,23 @@ export default function PasswordComponent({email, register, handleToggle, handle
         duration: 3000, // Toast duration in milliseconds
         isClosable: true, // Allow the user to close the toast
     })
-    const formSubmit = async(data:any)=>{
-       await loginMutation.mutateAsync(data).then(res=>{
-           localStorage.setItem("token", res.token)
-           localStorage.setItem("user",res.user)
-           navigate(location.state?.prevUrl)
-           setTimeout(() => {
-               toast({ title: "Login successfully" })
-           },1000);
-            
-        })      
+
+    
+    const formSubmit = async (data: any) => {
+        await loginMutation.mutateAsync(data).then(res => {
+            localStorage.setItem("token", res.token)
+            localStorage.setItem("user", res.user)
+            navigate(location.state?.prevUrl)
+            setTimeout(() => {
+                dispatch(getUserCart())
+                toast({ title: "Login successfully" })
+            }, 1000);
+
+        })
     }
 
 
-   
+
 
     return (
         <FormContainer>
@@ -57,7 +64,7 @@ export default function PasswordComponent({email, register, handleToggle, handle
                     <Input type='text' size="sm" borderRadius={3} {...register("password", {
                         pattern: "/[0-9]/",
                         required: "password is required!",
-                    })} onChange={handleInputChange}  />
+                    })} onChange={handleInputChange} />
                     {/* {isError && <FormErrorMessage fontSize={12} mt="1">Enter your email or mobile phone number</FormErrorMessage>} */}
                 </FormControl>
                 <Button width="100%" type="submit" size="sm" backgroundColor="#ffd814" color="black" fontWeight="500" _hover={{ backgroundColor: "#f5d016" }} _active={{ transition: "none" }}>Sign in</Button>

@@ -5,8 +5,10 @@ import ErrorPage from "./pages/ErrorPage";
 import SignInForm from "./pages/SignInForm";
 import SignupForm from "./pages/SignupForm";
 import ProductDetails from "./pages/ProductDetails";
-import Cart from "./pages/Cart";
+import Cart from "./pages/CartPage";
 import Checkout from "./pages/Checkout";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailed from "./pages/PaymentFailed";
 
 const router = createBrowserRouter([
     {
@@ -20,6 +22,8 @@ const router = createBrowserRouter([
             { path: '/product/:id', element: <ProductDetails /> },
             { path: '/cart', element: <Cart /> },
             { path: '/cart/checkout', element: <Checkout /> },
+            { path: '/payment/success', element: <PaymentSuccess /> },
+            { path: '/payment/failed', element: <PaymentFailed /> },
 
         ]
     }
