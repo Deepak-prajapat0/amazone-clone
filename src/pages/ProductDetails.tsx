@@ -35,7 +35,7 @@ export default function ProductDetails() {
     dispatch(addToCart({productId:product._id})).then((res:any)=>{
       localStorage.setItem('cart', JSON.stringify(res.payload.cart))
       setLoading(false)
-      toast({ title: res.msg })
+      toast({ title: res.payload.msg })
     })
     .catch(()=>{
       setLoading(false)

@@ -10,10 +10,11 @@ import { Cart } from '../models/CartModel';
 export default function CartPage() {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
+    const [loading, setLoading] = useState(false)
     const [cartData, setCartData] = useState<Cart>();
 
     const toast = useToast({
-        title: 'dfgdfgdfgdfgdfg',
+        title: 'Cart updated',
         status: 'success',
         position: 'bottom-right',
         containerStyle: {
@@ -30,10 +31,12 @@ export default function CartPage() {
             
         }
         else {
-            console.log("hlo")
+            setLoading(true)
             dispatch(updateCartAsync({productId:product._id,quantity})).then((res:any)=>{
                 localStorage.setItem('cart',JSON.stringify(res.payload.cart))
                 setCartData(res.payload.cart)
+                setLoading(false)
+                toast()
             })
         }
 
@@ -42,13 +45,15 @@ export default function CartPage() {
 
     useEffect(() => {
        if(localStorage.getItem('token')){
+        setLoading(true)
            dispatch(getUserCart())
                .then((response:any) => {
                    setCartData(response.payload.cart); 
                    localStorage.setItem('cart', JSON.stringify(response.payload.cart))// Assuming your action returns the data in payload
-                   console.log(response.payload.cart);
-               })
-               .catch((error) => {
+                    setLoading(false)
+                })
+                .catch((error) => {
+                   setLoading(false)
                    console.error('Error fetching cart:', error);
                });
        }
@@ -102,13 +107,23 @@ export default function CartPage() {
                         )}
                         <Text as='h6' fontSize="lg" fontWeight="bold" textAlign="right">Subtotal ({cartData?.totalItems} items): &#8377;{cartData?.totalPrice}</Text>
                     </Box>
-                    <Box p="4" width={{ base: "100%", md: "18rem" }} border="1px solid lightgray" backgroundColor="white">
+                    <Box p="4" width={{ base: "100%", md: "18rem" }} position='relative' border="1px solid lightgray" backgroundColor="white">
+                    {loading && <Spinner
+                        thickness='4px'
+                        speed='0.65s'
+                        emptyColor='gray.200'
+                        color='blue.500'
+                        size='xl'
+                        position='absolute'
+                        top='14%'
+                        left='44%'
+                    />}
                         <VStack fontSize={10} gap="0" fontWeight="semibold">
                             <Text as="span" color="#077e63"> Your order is eligible for FREE Delivery</Text>
                             <Text as="span">Select the option at checkout</Text>
                         </VStack>
                         <Text as='h6' my="2" fontSize="md" fontWeight="bold" textAlign="center">Subtotal ({cartData?.totalItems} items): &#8377;{cartData?.totalPrice}</Text>
-                        <Button colorScheme='yellow' bg="#FFD814" size="sm" w="100%" isDisabled={cartData?.totalPrice===0} onClick={proccedToBuy}>Proceed to Buy</Button>
+                        <Button colorScheme='yellow' bg="#FFD814" size="sm" w="100%" isDisabled={!cartData?.totalItems} onClick={proccedToBuy}>Proceed to Buy</Button>
                         {/* {JSON.stringify(cartData)} */}
                     </Box>
                 </Stack>

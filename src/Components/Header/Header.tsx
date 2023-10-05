@@ -7,8 +7,7 @@ import { useAppSelector } from '../../features/store';
 export default function Header() {
     const navigate = useNavigate();
     const cart = useAppSelector(state=>state.cart.cart)
-    const user = localStorage.getItem("token")
-    const email = localStorage.getItem("user")
+    const{user} = useAppSelector((state)=>state.auth)
     let localCart = localStorage.getItem('cart');
     if(localCart){
         localCart = JSON.parse(localCart).totalItems
@@ -35,12 +34,12 @@ export default function Header() {
                 <HStack gap="4" px="1" fontWeight={800} fontSize="10px">
                     <VStack width="100%" gap=".5">
                         {user ? 
-                            <Text width="fit-content" fontSize={10} as="span">{email}</Text>:
+                            <Text width="fit-content" fontSize={10} as="span">{user}</Text>:
                             <Text width="100%" as="span">Hello, sign in</Text>
                         }
                         <HStack fontSize={13}>
                             <span>Account & Lists</span>
-                            <UserMenu user={user!} />
+                            <UserMenu />
                         </HStack>
                     </VStack>
                     {/* || JSON.parse(localStorage.getItem('cart')||'')?.totalItems */}

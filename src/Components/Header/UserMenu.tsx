@@ -4,14 +4,15 @@ import { AiFillCaretDown } from 'react-icons/ai';
 import SIgnInButton from '../CustomComponent/SIgnInButton';
 import { useNavigate } from 'react-router-dom';
 import APIClient from '../../services/api-client';
+import { useAppDispatch, useAppSelector } from '../../features/store';
+import { logout } from '../../features/auth/authSlice';
 
-interface Props{
-    user:string; 
-}
 
-export default function UserMenu({user}:Props) {
+export default function UserMenu() {
     const [open, setOpen] = useState(false)
     const navigate = useNavigate()
+    const {token}= useAppSelector(state=>state.auth)
+    const dispatch = useAppDispatch()
     const api = new APIClient('/logout')
 
     // const 
@@ -20,8 +21,9 @@ export default function UserMenu({user}:Props) {
             <MenuButton onMouseEnter={() => setOpen(true)}><AiFillCaretDown /></MenuButton>
             <MenuList onMouseLeave={() => setOpen(false)} zIndex={50} color="black">
                 {/* MenuItems are not rendered unless Menu is open */}
-                {user ? <Button onClick={()=>{
+                {token ? <Button onClick={()=>{
                     api.logout().then(()=>{
+                        dispatch(logout())
                         navigate('/')
                     })
                 }}>Logout</Button> : <SIgnInButton />}

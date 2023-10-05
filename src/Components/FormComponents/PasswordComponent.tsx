@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { userLogin } from "../../hooks/userHooks";
 import { useAppDispatch } from "../../features/store";
 import { getUserCart } from "../../features/cart/cartSlice";
+import { setCredentials } from "../../features/auth/authSlice";
 
 interface Props {
     email: string;
@@ -37,6 +38,7 @@ export default function PasswordComponent({ email, register, handleToggle, handl
     
     const formSubmit = async (data: any) => {
         await loginMutation.mutateAsync(data).then(res => {
+            dispatch(setCredentials({user:res.user,token:res.token}))
             localStorage.setItem("token", res.token)
             localStorage.setItem("user", res.user)
             navigate(location.state?.prevUrl)

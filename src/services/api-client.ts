@@ -1,9 +1,12 @@
 import axios from "axios";
 import { Product } from "../models/ProductModel";
+// import { useAppDispatch } from "../features/store";
+// import { logout } from "../features/auth/authSlice";
 
 
 
 // import { products } from "../data/products";
+
 
 export interface FetchResponse{
     products: Product[];
@@ -54,8 +57,9 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response && error.response.status === 500 || error.response && error.response.status === 401) {
-             localStorage.clear()
+    // const dispatch = useAppDispatch()
+        if (error.response && error.response.status === 401) {
+            //  dispatch(logout())
         }
         return Promise.reject(error);
     }
@@ -97,11 +101,20 @@ class APIClient<T>{
     updateCart=(data:any)=>{
         return axiosInstance.put(this.endpoint, data)
     }
+    placeOrder=(data:any)=>{
+        return axiosInstance.post(this.endpoint, data)
+    }
     payment=(data:any)=>{
+        return axiosInstance.post(this.endpoint ,data)
+        .then(res=>res.data)
+        .catch(error=>error.message)
+    }
+    paymentStatus=(data:any)=>{
         return axiosInstance.post(this.endpoint ,data)
         .then(res=>res.data)
         .catch(error=>error.message)
     }
 }
 
+export {axiosInstance} 
 export default APIClient;
