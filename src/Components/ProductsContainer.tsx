@@ -1,11 +1,11 @@
-import { Box, Card, Image, CardBody, Heading, VStack, Text, Badge } from '@chakra-ui/react';
+import { Card, CardBody, Heading, VStack } from '@chakra-ui/react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../features/store';
 import { getAllProducts } from '../features/product/productSlice';
+import ProductCard from './ProductCard';
 
 interface Props {
     cards:any
@@ -53,15 +53,16 @@ export default function ProductsContainer({ cards }: Props) {
     useEffect(()=>{
         dispatch(getAllProducts())
         .then((res:any)=>{
-            console.log(res)
-            setProducts(res.payload.products)
+            if(res.payload){
+                setProducts(res.payload.products)
+            }
         })
             .catch((error) => {
                 console.error('Error fetching cart:', error);
             });
     },[])
 
-    const navigate = useNavigate()
+  
 
     return (
         <VStack py={{ base: 4, md: 6 }} gap="2rem" width="100%" overflowX="hidden" zIndex={50}>
@@ -73,11 +74,7 @@ export default function ProductsContainer({ cards }: Props) {
                         {index === 2 && <Heading size="md" py='4'>Appliances | Up to 55% off</Heading>}
                         <Slider {...settings} className='productStack' >
                             {products.map((product:any, index: number) =>
-                                <Box key={index} mx="1" p="2" width="8rem" >
-                                    <Image src={product.thumbnail} alt={product.title} height="9rem" width="100%" />
-                                    <Text noOfLines={3} pointerEvents="all" cursor="pointer" _hover={{textDecoration:'underline'}} onClick={() => navigate(`/product/${product._id}`)} color="#088EC4" style={{ fontSize: "clamp(10px, 4vw, 14px)" }}>{product.title}</Text>
-                                    <Text fontSize={18} mt={2}>&#8377;{product.price.cost} <Badge padding="4px 8px" backgroundColor="#CC0C39" color="white" fontSize="11">{product.price.discount} off</Badge></Text>
-                                </Box>
+                               <ProductCard key={index} product={product}/>
                             )}
                             
                         </Slider>

@@ -7,7 +7,6 @@ import { RouterProvider } from 'react-router-dom'
 import router from './routes.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { ToastProvider } from './Components/ToastProvider.tsx'
 import { store } from './features/store.ts'
 import { Provider } from 'react-redux'
 
@@ -19,11 +18,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <ToastProvider>
           <Provider store={store}>
           <RouterProvider router={router} />
           </Provider>
-        </ToastProvider>
       </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>,

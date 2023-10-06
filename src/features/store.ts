@@ -3,14 +3,18 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import cartSlice from "./cart/cartSlice";
 import productSlice from "./product/productSlice";
 import authSlice from "./auth/authSlice";
+import wishlistSlice from "./wishlist/wishlistSlice";
+import orderSlice from "./order/orderSlice";
 
 
 
 export const store = configureStore({
     reducer:{
         auth:authSlice,
+        products:productSlice,
         cart:cartSlice,
-        products:productSlice
+        order:orderSlice,
+        wishlist:wishlistSlice
     }
 })
 export type RootState = ReturnType<typeof store.getState>

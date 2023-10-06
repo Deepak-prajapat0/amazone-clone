@@ -3,9 +3,11 @@ import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import UserMenu from './UserMenu';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../features/store';
+import { useState } from 'react';
 
 export default function Header() {
     const navigate = useNavigate();
+    const [search ,setSearch]= useState('')
     const cart = useAppSelector(state=>state.cart.cart)
     const{user} = useAppSelector((state)=>state.auth)
     let localCart = localStorage.getItem('cart');
@@ -15,7 +17,9 @@ export default function Header() {
     
 
     // const cart = selector((state: any) => state.cart)
-
+    const handleSearch =()=>{
+            navigate(`/product/search?q=${search}`)
+    }
 
 
  
@@ -26,10 +30,10 @@ export default function Header() {
                     <Image src="https://firebasestorage.googleapis.com/v0/b/angular-e92b6.appspot.com/o/amazon-white-removebg-preview%20(2).png?alt=media&token=da13b1e4-b7d8-41ea-96e0-a7d1945e7854" width="6rem" margin="15px 0 0 5px" color="white" />
                 </Link>
                 <InputGroup maxWidth={"40rem"} color="black" outline="none">
-                    <InputRightElement pointerEvents='none' backgroundColor="#FEBD69" borderEndRadius="4px" >
-                        <AiOutlineSearch />
+                    <InputRightElement backgroundColor="#FEBD69" borderEndRadius="4px" onClick={handleSearch} >
+                        <AiOutlineSearch/>
                     </InputRightElement>
-                    <Input type='text' paddingLeft={4} placeholder='Search Amazon.in' bg={"white"} border="none" borderRadius={"5px"} outline="none" _focusVisible={{ border: "none" }} _focus={{ borderColor: "transparent", outline: "2.5px solid #FEBD69", outlineOffset: "0px" }} />
+                    <Input type='text' onChange={(e)=>setSearch(e.target.value)} paddingLeft={4} placeholder='Search Amazon.in' bg={"white"} border="none" borderRadius={"5px"} outline="none" _focusVisible={{ border: "none" }} _focus={{ borderColor: "transparent", outline: "2.5px solid #FEBD69", outlineOffset: "0px" }} />
                 </InputGroup>
                 <HStack gap="4" px="1" fontWeight={800} fontSize="10px">
                     <VStack width="100%" gap=".5">

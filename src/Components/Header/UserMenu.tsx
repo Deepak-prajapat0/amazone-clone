@@ -27,8 +27,8 @@ export default function UserMenu() {
                         navigate('/')
                     })
                 }}>Logout</Button> : <SIgnInButton />}
-                <MenuItem>Your Orders</MenuItem>
-                <MenuItem>Your Wish List</MenuItem>
+                <MenuItem onClick={()=>navigate('/order')}>Your Orders</MenuItem>
+                <MenuItem onClick={()=>navigate('/wishlist')}>Your Wish List</MenuItem>
             </MenuList>
         </Menu>
     )

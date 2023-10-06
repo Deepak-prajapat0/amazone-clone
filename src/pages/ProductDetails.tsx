@@ -49,28 +49,28 @@ export default function ProductDetails() {
   }
 
   if (isLoading) {
-    return <Spinner />
+    return <Box width='100%' display='flex' justifyContent='center' height='30vh' alignItems='flex-end'>
+      <Spinner speed='0.3s'
+        m="auto"
+        emptyColor='gray.200'
+        color='blue.500'
+        size='xl' />
+    </Box>
   }
   if (error || !data) return <>Error</>;
 
   return (
-    <Box p="4" display="flex" flexDirection={{ base: "column", md: "row" }} flexWrap="nowrap" justifyItems="center">
+    <Box p="4" display="flex" gap="5px" flexDirection={{ base: "column", md: "row" }} flexWrap="nowrap" justifyItems="center">
       {/* image box */}
       <Box maxWidth="35rem" display="flex" flexDirection={{ base: "column", md: "row" }} alignItems={{ base: "center", md: "start" }} gap="5px" position="sticky" top="0" left="0">
         <Box display="flex" gap="6px" flexDirection={{ base: "row", md: "column" }} minWidth="4rem">
           {data.image_url.map((url: string, index: number) =>
-            <Image key={index} src={url} onClick={() => setImage(index)} alt="multiple photos" height="5rem" width="5rem" cursor="pointer" />
+            <Image key={index} src={url} onClick={() => setImage(index)} alt="multiple photos" height="5rem" width="5rem" cursor="pointer" border='1px solid lightgray' />
           )}
         </Box>
-        <Image src={data.image_url[image]} minWidth="20rem" />
+        <Image src={data.image_url[image]} maxWidth="25rem" />
       </Box>
-      <Show below="md">
-        <VStack maxWidth="15rem" h="max-content" p="4" border="1px solid lightgray" borderRadius="8">
-          <Text fontSize="14" fontWeight="bold"><span style={{ color: "#307AC6" }}>Free delivery</span> Monday, 28 October.Order within 19hrs.</Text>
-          <Button size="sm" h="9" width="80%" borderRadius="16" colorScheme="yellow" bg="#FFD814" fontWeight="light" isLoading={loading} loadingText='Adding ...' isDisabled={data.stock === 0} onClick={() => addProductInCart(data)} >Add to Cart</Button>
-
-        </VStack>
-      </Show>
+      
 
       {/* detailbox */}
       <VStack maxWidth="30rem" alignItems="start" gap="1" px="4" fontSize={24}>
@@ -83,6 +83,13 @@ export default function ProductDetails() {
           <Text>EMI start at &#8377;200</Text>
           <Text>EMI available</Text>
         </Box>
+        <Show below="md">
+          <VStack maxWidth="20rem" h="max-content" p="4" alignItems='flex-start'>
+            <Text fontSize="14" fontWeight="bold"><span style={{ color: "#307AC6" }}>Free delivery</span> Monday, 28 October.Order within 19hrs.</Text>
+            <Button size="sm" h="9" width="80%" borderRadius="16" colorScheme="yellow" bg="#FFD814" fontWeight="light" isLoading={loading} loadingText='Adding ...' isDisabled={data.stock === 0} onClick={() => addProductInCart(data)} >Add to Cart</Button>
+
+          </VStack>
+        </Show>
         <br />
         <Divider />
         <HStack fontSize={20} py="4">
@@ -117,8 +124,8 @@ export default function ProductDetails() {
 
       {/* button box */}
       <Show above="md">
-        <VStack maxWidth="15rem" h="max-content" p="4" border="1px solid lightgray" borderRadius="8">
-          <Text fontSize="14" fontWeight="bold"><span style={{ color: "#307AC6" }}>Free delivery</span> Monday, 28 October.Order within 19hrs.</Text>
+        <VStack maxWidth="18rem" h="max-content" p="4" border="1px solid lightgray" borderRadius="8">
+          <Text fontSize="14" textAlign='center' fontWeight="bold"><span style={{ color: "#307AC6" }}>Free delivery</span> Monday, 28 October.Order within 19hrs.</Text>
           <Button size="sm" h="9" width="80%" colorScheme='yellow' bg="#FFD814" borderRadius="16"  fontWeight="light" isLoading={loading} loadingText='Adding ...' isDisabled={data.stock === 0} onClick={() => addProductInCart(data)} >Add to Cart</Button>
 
         </VStack>

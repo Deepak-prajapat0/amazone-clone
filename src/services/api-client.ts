@@ -4,8 +4,9 @@ import { Product } from "../models/ProductModel";
 // import { logout } from "../features/auth/authSlice";
 
 
-
+// import useLogout from "../hooks/useLogout";
 // import { products } from "../data/products";
+// const logout = useLogout()
 
 
 export interface FetchResponse{
@@ -82,6 +83,9 @@ class APIClient<T>{
             .get<FetchResponse2<T>>(this.endpoint + '/' + title)
             .then((res) => res.data.product);
     };
+    searchProduct=(q:string)=>{
+        return axiosInstance.get(this.endpoint+`?q=${q}`)
+    }
     register =(data:any)=>{
         return axiosInstance.post<Response<T>>(this.endpoint+'/register',data)
         .then((res)=>console.log(res))
@@ -103,6 +107,15 @@ class APIClient<T>{
     }
     placeOrder=(data:any)=>{
         return axiosInstance.post(this.endpoint, data)
+    }
+    getOrders=()=>{
+        return axiosInstance.get(this.endpoint)
+    }
+    addToWishlist=(data:any)=>{
+        return axiosInstance.post(this.endpoint, data)
+    }
+    getWishlist=()=>{
+        return axiosInstance.get(this.endpoint)
     }
     payment=(data:any)=>{
         return axiosInstance.post(this.endpoint ,data)

@@ -1,4 +1,4 @@
-import { Box, FormControl, FormLabel, Heading, Input, Stack, VStack, Text, Button, FormHelperText } from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Heading, Input, Stack, VStack, Text, Button } from '@chakra-ui/react';
 import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import APIClient from '../services/api-client';
@@ -31,7 +31,7 @@ const initialShippingDetailsState: ShippingDetailsForm = {
 
 
 export default function Checkout() {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<ShippingDetailsForm>();
+    const { register, handleSubmit, formState: { errors } } = useForm<ShippingDetailsForm>();
     const [cartData, setCartdata] = useState(JSON.parse(localStorage.getItem('cart') || ''))
     const [shippingDetails, setShippingDetails] = useState<ShippingDetailsForm>(initialShippingDetailsState)
     const [disabled,setDisabled]= useState(true)

@@ -1,16 +1,19 @@
-import { Box, Button, Divider, Heading, Spinner, Stack, Text, VStack, useToast } from '@chakra-ui/react';
+import { Box, Button, Divider, HStack, Heading, Image, Spinner, Stack, Text, VStack, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getUserCart, updateCartAsync } from '../features/cart/cartSlice';
-import { useAppDispatch } from '../features/store';
+import { useAppDispatch, useAppSelector } from '../features/store';
 import CartProductCard from '../Components/CartProductCard';
 import { Cart } from '../models/CartModel';
+import { logout } from '../features/auth/authSlice';
+import SpinnerLoader from '../Components/SpinnerLoader';
 
 
 export default function CartPage() {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const [loading, setLoading] = useState(false)
+    const { loading } = useAppSelector(state => state.cart)
+    const [updating, setUpdating] = useState(false)
     const [cartData, setCartData] = useState<Cart>();
 
     const toast = useToast({
@@ -31,11 +34,11 @@ export default function CartPage() {
             
         }
         else {
-            setLoading(true)
+            setUpdating(true)
             dispatch(updateCartAsync({productId:product._id,quantity})).then((res:any)=>{
                 localStorage.setItem('cart',JSON.stringify(res.payload.cart))
                 setCartData(res.payload.cart)
-                setLoading(false)
+                setUpdating(false)
                 toast()
             })
         }
@@ -45,16 +48,22 @@ export default function CartPage() {
 
     useEffect(() => {
        if(localStorage.getItem('token')){
-        setLoading(true)
+        setUpdating(true)
            dispatch(getUserCart())
                .then((response:any) => {
-                   setCartData(response.payload.cart); 
-                   localStorage.setItem('cart', JSON.stringify(response.payload.cart))// Assuming your action returns the data in payload
-                    setLoading(false)
+                   if(response.payload){
+                       setCartData(response.payload.cart);
+                       localStorage.setItem('cart', JSON.stringify(response.payload.cart))// Assuming your action returns the data in payload
+                       setUpdating(false)
+                    }
                 })
                 .catch((error) => {
-                   setLoading(false)
-                   console.error('Error fetching cart:', error);
+                    console.log('error')
+                   setUpdating(false)
+                    if (error.response && error.response.status === 401) {
+                       dispatch(logout())
+                        localStorage.clear()
+                    }
                });
        }
     }, [dispatch])
@@ -64,19 +73,13 @@ export default function CartPage() {
         navigate('/cart/checkout')
     }
 
-    if (cartData && !cartData.cartItems) {
-        return <Box width='100%' display='flex' justifyContent='center' height='30vh' alignItems='flex-end'>
-            <Spinner speed='0.3s'
-                m="auto"
-                emptyColor='gray.200'
-                color='blue.500'
-                size='xl' />
-        </Box>
+    if (loading && !cartData) {
+        return <SpinnerLoader/>
     }
 
     return (
         <>
-            {/* {!cartData || !cartData.cartItems ?
+            {cartData && cartData.cartItems.length <1 ?
 
                 <>
                     {
@@ -86,48 +89,54 @@ export default function CartPage() {
                                 <Heading as="h4" size="lg">Your Amazon cart is empty</Heading>
                                 <Text w="100%" as="span" fontSize="sm" py="0">Shop today's deals</Text>
                                 <HStack w="100%" mt="4">
-                                    <Button size='sm' onClick={() => navigate('/signin', { state: { prevUrl: location.pathname } })} boxShadow='lg' backgroundColor="#FFD814" _hover={{ transition: "none" }}>
+                                    {/* <Button size='sm' onClick={() => navigate('/signin', { state: { prevUrl: location.pathname } })} boxShadow='lg' backgroundColor="#FFD814" _hover={{ transition: "none" }}>
                                         Signin to your account
                                     </Button>
                                     <Button size='sm' onClick={() => navigate('/signup', { state: { prevUrl: location.pathname } })} boxShadow='lg' variant="outline" bg="white">
                                         Signup now
-                                    </Button>
+                                    </Button> */}
+                                    <Button size='sm' onClick={() => navigate('/')} boxShadow='lg' variant="outline" bg="white">
+                                        Shop Now
+                                    </Button> 
                                 </HStack>
                             </VStack>
                         </HStack>
                     }
                 </>
-                : */}
+                :
                 <Stack p="4" pt="8" minHeight="90vh" flexDirection={{ base: "column-reverse", md: "row" }} alignItems="flex-start" justifyContent="space-between" backgroundColor="#EAEDED">
-                    <Box p={{ base: "2", md: "5" }} width={{ base: "100%", md: "80%" }} border="1px solid lightgray" backgroundColor="white">
-                        <Heading size="lg" pb="2" fontWeight="light">Shopping Cart</Heading>
-                        <Divider />
-                        {cartData && cartData.cartItems.map((item: any, index: number) =>
-                            <CartProductCard key={index} item={item} updateQuantity={updateQuantity}  />
-                        )}
-                        <Text as='h6' fontSize="lg" fontWeight="bold" textAlign="right">Subtotal ({cartData?.totalItems} items): &#8377;{cartData?.totalPrice}</Text>
+                     <Box p={{ base: "2", md: "5" }} width={{ base: "100%", md: "80%" }} border="1px solid lightgray" backgroundColor="white">
+                        {cartData &&
+                        <>
+                            <Heading size="lg" pb="2" fontWeight="light">Shopping Cart</Heading>
+                            <Divider />
+                            {cartData.cartItems.map((item: any, index: number) =>
+                            <CartProductCard key={index} item={item} updateQuantity={updateQuantity} />)}
+                            <Text as='h6' fontSize="lg" fontWeight="bold" textAlign="right">Subtotal ({cartData?.totalItems} items): &#8377;{cartData?.totalPrice}</Text>
+                        </>
+                        }
                     </Box>
                     <Box p="4" width={{ base: "100%", md: "18rem" }} position='relative' border="1px solid lightgray" backgroundColor="white">
-                    {loading && <Spinner
-                        thickness='4px'
-                        speed='0.65s'
-                        emptyColor='gray.200'
-                        color='blue.500'
-                        size='xl'
-                        position='absolute'
-                        top='14%'
-                        left='44%'
-                    />}
+                        {updating && <Spinner
+                            thickness='4px'
+                            speed='0.65s'
+                            emptyColor='gray.200'
+                            color='blue.500'
+                            size='xl'
+                            position='absolute'
+                            top='14%'
+                            left='44%'
+                        />}
                         <VStack fontSize={10} gap="0" fontWeight="semibold">
                             <Text as="span" color="#077e63"> Your order is eligible for FREE Delivery</Text>
                             <Text as="span">Select the option at checkout</Text>
                         </VStack>
                         <Text as='h6' my="2" fontSize="md" fontWeight="bold" textAlign="center">Subtotal ({cartData?.totalItems} items): &#8377;{cartData?.totalPrice}</Text>
-                        <Button colorScheme='yellow' bg="#FFD814" size="sm" w="100%" isDisabled={!cartData?.totalItems} onClick={proccedToBuy}>Proceed to Buy</Button>
+                        <Button colorScheme='yellow' bg="#FFD814" size="sm" w="100%" isDisabled={!cartData?.totalItems || updating} onClick={proccedToBuy}>Proceed to Buy</Button>
                         {/* {JSON.stringify(cartData)} */}
                     </Box>
                 </Stack>
-            {/* } */}
+             } 
             {/* {loading ? <span>loading ....</span>
     :  
             <div>{JSON.stringify(cartData)}</div>
