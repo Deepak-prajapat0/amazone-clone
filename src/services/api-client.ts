@@ -13,6 +13,7 @@ export interface FetchResponse{
     products: Product[];
 }
 export interface FetchResponse2<T> {
+    [x: string]: any;
     product: T;
 }
 interface Response<T> {
@@ -43,7 +44,7 @@ axiosInstance.interceptors.request.use(
             abortController.abort();
         }
 
-        // Create a new AbortController for this request
+        // // Create a new AbortController for this request
         abortController = new AbortController();
         const signal = abortController.signal;
         config.signal = signal;
@@ -55,16 +56,6 @@ axiosInstance.interceptors.request.use(
 );
 
 
-axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-    // const dispatch = useAppDispatch()
-        if (error.response && error.response.status === 401) {
-            //  dispatch(logout())
-        }
-        return Promise.reject(error);
-    }
-);
 
 
 class APIClient<T>{
@@ -91,10 +82,12 @@ class APIClient<T>{
         .then((res)=>console.log(res))
     }
     logout=()=>{
-        return axiosInstance.post(this.endpoint).then(res=>{
+        return axiosInstance.post(this.endpoint).then(()=>{
             localStorage.clear()
-            res.data
         })
+    }
+    refreshToken=(data:any)=>{
+        return axiosInstance.post(this.endpoint,data)
     }
     userCart=()=>{
         return axiosInstance.get(this.endpoint)
@@ -111,6 +104,14 @@ class APIClient<T>{
     getOrders=()=>{
         return axiosInstance.get(this.endpoint)
     }
+    getUserOrderDetails = (id: string) => {
+        return axiosInstance
+            .get<FetchResponse2<T>>(this.endpoint + '/' + id)
+    };
+    cancelOrder = (id: string) => {
+        return axiosInstance
+            .put(this.endpoint + '/' + id)
+    };
     addToWishlist=(data:any)=>{
         return axiosInstance.post(this.endpoint, data)
     }
@@ -128,6 +129,20 @@ class APIClient<T>{
         .catch(error=>error.message)
     }
 }
+
+
+
+axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        // const dispatch = useAppDispatch()
+        if (error.response && error.response.status === 401 || error.response.status === 500) {
+            // store.dispatch(logout())
+            localStorage.clear()
+        }
+        return Promise.reject(error);
+    }
+);
 
 export {axiosInstance} 
 export default APIClient;

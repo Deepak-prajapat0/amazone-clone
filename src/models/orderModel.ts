@@ -16,7 +16,7 @@ export interface Order {
     };
     shippingDetails:{
         name:string;
-        phone:string;
+        phone:number;
         address:{
             house: string;
             street:string;

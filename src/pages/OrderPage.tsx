@@ -52,7 +52,7 @@ export default function OrderPage() {
             </Card>
             <HStack w='inherit' p='2' justifyContent='space-between' position='relative' borderTop='1px solid lightgray'>
               <HStack alignItems='start'>
-                <Image src={order.orderDetails.products[0].productId.thumbnail} height={{base:'6rem',md:"8rem"}} width={{base:'6rem',md:"8rem"}} />
+                <Image src={order.orderDetails.products[0].productId.thumbnail} height={{base:'6rem',md:"6rem"}} width={{base:'6rem',md:"6rem"}} />
                 <Text pt='2' fontSize={{ base: '11px', md: '16' }}>{order.orderDetails.products[0].productId.title}</Text>
                 <Text as='span' position='absolute' bottom='0' right='1rem'><Link to={`/order/${order._id}`} className="link">{order.orderDetails.products.length > 1 && '+' + (order.orderDetails.products.length - 1) + '  more'}</Link></Text>
               </HStack>

@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../features/store'
 import { getUserWishlist } from '../features/wishlist/wishlistSlice'
 import SpinnerLoader from '../Components/SpinnerLoader'
-import { Wishlist } from '../models/WishlishtModel'
 
 export default function Wishlists() {
     
@@ -15,7 +14,7 @@ const {loading,wishlist} = useAppSelector(state=>state.wishlist)
     },[])
 
 
-  if (loading || !wishlist){
+  if (loading){
       return <SpinnerLoader/>
     }
   return (

@@ -49,6 +49,7 @@ export default function SignupForm() {
             await registrationMutation.mutateAsync(data).then((res:any)=>{
                 localStorage.setItem("token", res.user.token)
                 localStorage.setItem("user",res.user.email)
+                localStorage.setItem('refresh-token', res.user.refreshJwtToken)
                 navigate(location.state?.prevUrl)
             })
         } catch (error) {

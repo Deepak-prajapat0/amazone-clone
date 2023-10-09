@@ -41,6 +41,7 @@ export default function PasswordComponent({ email, register, handleToggle, handl
             dispatch(setCredentials({user:res.user,token:res.token}))
             localStorage.setItem("token", res.token)
             localStorage.setItem("user", res.user)
+            localStorage.setItem('refresh-token', res.refreshJwtToken)
             navigate(location.state?.prevUrl)
             setTimeout(() => {
                 dispatch(getUserCart())

@@ -9,18 +9,47 @@ import { setCredentials } from '../features/auth/authSlice';
 
 export default function Layout() {
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch()
+
 
   useEffect(() => {
     window.scrollTo(0, 0);    
   }, [pathname]);
 
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
 
   useEffect(()=>{
     let user = localStorage.getItem('user');
     let token = localStorage.getItem('token')
     dispatch(setCredentials({user,token}))
   },[])
+
+
+  // useEffect(() => {
+  //   if(localStorage.getItem('token')){
+  //     const user = localStorage.getItem("token");
+
+  //     if (user) {
+  //       const decodedJwt = parseJwt(user);
+
+  //       if (decodedJwt.exp * 1000 < Date.now()) {
+  //         apiClient.refreshToken({refreshToken:localStorage.getItem('refresh-token')}).then(res=>{
+  //           console.log(res)
+  //           localStorage.setItem('token',res.data.token)
+  //           dispatch(setCredentials(res.data))
+  //         })
+  //         .catch(()=>{
+  //           apiClient = new APIClient('/logout')
+  //           apiClient.logout().then(res=>{
+  //             console.log(res)
+  //             dispatch(logout())
+  //             navigate('/signin')
+  //           })
+  //         })
+  //       }
+  //     }
+  //   }
+  // }, [pathname,dispatch]);
 
   return (
     <div>

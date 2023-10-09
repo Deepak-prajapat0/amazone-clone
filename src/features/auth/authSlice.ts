@@ -9,6 +9,11 @@ const authSlice = createSlice({
             state.user= user
             state.token = token
         },
+        refreshJwt:(state,action)=>{
+            const {user,token}= action.payload;
+            state.user= user
+            state.token = token
+        },
         logout:(state)=>{
             state.user=null
             state.token=null
