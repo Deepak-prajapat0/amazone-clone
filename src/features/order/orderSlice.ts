@@ -4,7 +4,7 @@ import { Order } from "../../models/orderModel";
 // import { Cart } from "../../models/CartModel";
 
 
-let apiClient = new APIClient('/order');
+const apiClient = new APIClient('/order');
 
 interface OrderResult {
     order: Order[];
@@ -84,6 +84,7 @@ export const getOrderDetails = createAsyncThunk('order/fetch', async (payload:{i
     return response.data;
 });
 export const cancelUserOrder = createAsyncThunk('order/update', async (payload:{id:string}) => {
+    const apiClient= new APIClient('/order/cancel')
     const response = await apiClient.cancelOrder(payload.id); // Replace with your API endpoint
     return response.data;
 });
@@ -107,7 +108,13 @@ const orderSlice = createSlice({
         })
         builder.addCase(getOrderDetails.fulfilled, (state, action) => {
             state.loading = false
-            console.log(action.payload,'gdgdgdgdfgfdgdfg')
+            state.orderDetail = action.payload.order
+        })
+        builder.addCase(cancelUserOrder.pending, (state, _action) => {
+            state.loading = true
+        })
+        builder.addCase(cancelUserOrder.fulfilled, (state, action) => {
+            state.loading = false
             state.orderDetail = action.payload.order
         })
     },

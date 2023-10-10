@@ -18,7 +18,12 @@ export default function Header() {
 
     // const cart = selector((state: any) => state.cart)
     const handleSearch =()=>{
-            navigate(`/product/search?q=${search}`)
+           if(search.length <2){
+            return 
+           }
+           else{
+               navigate(`/product/search?q=${search}`)
+           }
     }
 
 

@@ -50,7 +50,7 @@ const productsSlice = createSlice({
         })
         builder.addCase(searchProduct.fulfilled, (state, action) => {
             state.loading = false
-            state.searchedProducts = action.payload.product
+            state.searchedProducts = action.payload.products
         })
         builder.addCase(searchProduct.rejected, (state, _action) => {
             state.loading = false

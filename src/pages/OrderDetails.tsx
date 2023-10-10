@@ -1,21 +1,36 @@
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../features/store"
-import { getOrderDetails } from "../features/order/orderSlice"
-import { Link, useParams } from "react-router-dom";
+import { cancelUserOrder, getOrderDetails } from "../features/order/orderSlice"
+import { Link, useNavigate, useParams } from "react-router-dom";
 import SpinnerLoader from "../Components/SpinnerLoader";
-import { Box, Button, Divider, HStack, Heading, Image, ListItem, Stack, Text, UnorderedList, VStack } from "@chakra-ui/react";
+import { Badge, Box, Button, Divider, HStack, Heading, Image, ListItem, Stack, Text, UnorderedList, VStack, useToast } from "@chakra-ui/react";
 
 export default function OrderDetails() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate()
   const { loading, orderDetail } = useAppSelector(state => state.order)
   const { id } = useParams()
-
+  const toast = useToast({
+    title: '',
+    status: 'success',
+    position: 'bottom-right',
+    containerStyle: {
+      maxWidth: '100%',
+    },
+    duration: 3000, // Toast duration in milliseconds
+    isClosable: true, // Allow the user to close the toast
+  })
 
   useEffect(() => {
     dispatch(getOrderDetails({ id: id! }))
-    console.log(orderDetail)
   }, [])
 
+  const cancelOrder = () => {
+    dispatch(cancelUserOrder({ id: id! })).then(res => {
+      console.log(res)
+      navigate('/order')
+    })
+  }
 
   if (!id) {
     return <>Not found</>
@@ -26,9 +41,16 @@ export default function OrderDetails() {
   return (
     <Box p={{ base: 1, md: 6 }} m='auto' w={{ base: '100%', md: '70%' }}>
       <Heading>Order Details</Heading>
-      <Stack pt='4' flexDirection={{base:'column',sm:"row"}}>
+      {orderDetail.status !== 'canceled' &&
+       orderDetail.paymentStatus === 'succeeded' &&
+        <Badge colorScheme='green'>Success</Badge> 
+      }
+      {orderDetail.status === 'canceled' && 
+        <Badge colorScheme='red'>Canceled</Badge>
+      }
+      {orderDetail.paymentStatus !== 'succeeded' && <Badge colorScheme='red'>Payment failed</Badge> }
+      <Stack pt='4' flexDirection={{ base: 'column', sm: "row" }} justifyContent='space-between'>
         <Text>Order on{new Date(orderDetail.createdAt).toLocaleDateString()}</Text>
-        <Divider orientation='vertical' />
         <Text>Order id: {orderDetail._id}</Text>
       </Stack>
       <br />
@@ -71,21 +93,21 @@ export default function OrderDetails() {
       <br />
       <Box border='1px solid lightgray' borderRadius='10px'>
         {orderDetail.orderDetails.products.map((item, index) =>
-          <>
-            <HStack key={index} gap={2} p="2" alignItems='start'>
+          <Box key={index} >
+            <HStack gap={2} p="2" alignItems='start'>
               <Image src={item.productId.thumbnail} alt={item.productId.title} height='7rem' width='6rem' />
               <VStack alignItems='flex-start' p='2' fontSize={{ base: '12px', md: 'md' }}>
                 <Text noOfLines={1} color='#007185' _hover={{ textDecoration: 'underline', cursor: 'pointer' }}>
                   <Link to={`/product/${item.productId._id}`}>{item.productId.title}</Link>
                 </Text>
-                <Text>&#8377; {item.productId.price.cost}</Text>
+                <Text>&#8377; {item.productId?.price?.cost}</Text>
               </VStack>
             </HStack>
             <Divider width='100%' />
-          </>
+          </Box>
         )}
       </Box>
-      <Button width="100%" type="submit"  size="sm" backgroundColor="#ffd814" color="black" fontWeight="500" _hover={{ backgroundColor: "#f5d016" }} _active={{ transition: "none" }}>Cancel Order</Button>
+      {orderDetail.status !== 'canceled' && orderDetail.paymentStatus === 'succeeded' && <Button type="submit" onClick={cancelOrder} size="sm" mt='4' width="10rem" backgroundColor="#ffd814" color="black" fontWeight="500" _hover={{ backgroundColor: "#f5d016" }} _active={{ transition: "none" }}>Cancel Order</Button>}
     </Box>
   )
 }
