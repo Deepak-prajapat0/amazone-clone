@@ -65,21 +65,22 @@ class APIClient<T>{
         this.endpoint = endpoint;
     }
 
-    getAll = () => {
+    getProducts = () => {
         return axiosInstance
             .get<FetchResponse>(this.endpoint)
     }
-    get = (title: string) => {
+    getProductById = (id: string) => {
         return axiosInstance
-            .get<FetchResponse2<T>>(this.endpoint + '/' + title)
-            .then((res) => res.data.product);
+            .get(this.endpoint + '/' + id)
     };
     searchProduct=(q:string)=>{
         return axiosInstance.get(this.endpoint+`?q=${q}`)
     }
+    login =(data:any)=>{
+        return axiosInstance.post<Response<T>>(this.endpoint,data)
+    }
     register =(data:any)=>{
-        return axiosInstance.post<Response<T>>(this.endpoint+'/register',data)
-        .then((res)=>console.log(res))
+        return axiosInstance.post<Response<T>>(this.endpoint,data)
     }
     logout=()=>{
         return axiosInstance.post(this.endpoint).then(()=>{

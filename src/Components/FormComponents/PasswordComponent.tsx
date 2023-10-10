@@ -2,11 +2,11 @@ import { Heading, Text, FormControl, FormLabel, Input, Button, HStack, Link, Che
 import FormContainer from "./FormContainer";
 import { FieldValues, UseFormHandleSubmit } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { userLogin } from "../../hooks/userHooks";
+
 import { useAppDispatch } from "../../features/store";
-import { getUserCart } from "../../features/cart/cartSlice";
+import APIClient from "../../services/api-client";
 import { setCredentials } from "../../features/auth/authSlice";
+import { getUserCart } from "../../features/cart/cartSlice";
 
 interface Props {
     email: string;
@@ -21,9 +21,9 @@ interface Props {
 export default function PasswordComponent({ email, register, handleToggle, handleInputChange, handleSubmit }: Props) {
     const dispatch= useAppDispatch();
     
-    const loginMutation = useMutation(userLogin)
     const navigate = useNavigate()
     const location = useLocation()
+    const apiClient = new APIClient('/login')
     const toast = useToast({
         title: '',
         status: 'success',
@@ -37,17 +37,19 @@ export default function PasswordComponent({ email, register, handleToggle, handl
 
     
     const formSubmit = async (data: any) => {
-        await loginMutation.mutateAsync(data).then(res => {
-            dispatch(setCredentials({user:res.user,token:res.token}))
-            localStorage.setItem("token", res.token)
-            localStorage.setItem("user", res.user)
-            localStorage.setItem('refresh-token', res.refreshJwtToken)
-            navigate(location.state?.prevUrl)
-            setTimeout(() => {
-                dispatch(getUserCart())
-                toast({ title: "Login successfully" })
-            }, 1000);
+        apiClient.login(data).then((res:any) => {
+          if(res.data){
+              dispatch(setCredentials({ user: res.data.user, token: res.data.token }))
+              localStorage.setItem("token", res.data.token)
+              localStorage.setItem("user", res.data.user)
+              localStorage.setItem('refresh-token', res.data.refreshJwtToken)
+              navigate(location.state?.prevUrl)
+              setTimeout(() => {
+                  dispatch(getUserCart())
+                  toast({ title: "Login successfully" })
+              }, 1000);
 
+          }
         })
     }
 

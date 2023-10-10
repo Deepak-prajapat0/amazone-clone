@@ -24,6 +24,10 @@ export default function OrderPage() {
     return <SpinnerLoader/>
   }
 
+  if(!orders.length){
+    return <Heading textAlign='center' pt='12'>No Orders placed yet</Heading>
+  }
+
   return (
     <Box m='auto' p='2' pt={{ base: '8', md: "12" }} pb='10' width={{ base: '100%', md: '80%' }}>
       <Heading size='lg'>Your Orders</Heading>

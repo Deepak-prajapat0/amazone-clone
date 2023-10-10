@@ -12,7 +12,13 @@ export default function Header() {
     const{user} = useAppSelector((state)=>state.auth)
     let localCart = localStorage.getItem('cart');
     if(localCart){
-        localCart = JSON.parse(localCart).totalItems
+        let cartItem = JSON.parse(localCart);
+        if( cartItem && cartItem.totalItems){
+            localCart = cartItem.totalItems
+        }
+        else{
+            localCart = '0'
+        }
     }
     
 

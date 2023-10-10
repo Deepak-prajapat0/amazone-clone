@@ -7,7 +7,6 @@ import CartProductCard from '../Components/CartProductCard';
 import { Cart } from '../models/CartModel';
 import { logout } from '../features/auth/authSlice';
 import SpinnerLoader from '../Components/SpinnerLoader';
-import Wishlists from './Wishlists';
 
 
 export default function CartPage() {
@@ -78,9 +77,10 @@ export default function CartPage() {
         return <SpinnerLoader/>
     }
 
+
     return (
         <>
-            {cartData && cartData.cartItems.length <= 0 ?
+            {cartData && cartData.cartItems.length <= 0 || cartData == null ?
 
                 <>
                     {

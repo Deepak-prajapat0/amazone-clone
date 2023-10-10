@@ -17,23 +17,23 @@ const initialState:CartResult ={
         userId:'',
         cartItems:[{
             productId:{
-                _id:'',
-                title:'',
-                brand:'',
-                description:'',
-                stock:0,
-                image_url:[],
-                thumbnail:'',
-                price:{
-                    cost:0,
-                    mrp:0,
-                    discount:''
-                },
-                features:[],
-                productDetails:[{
-                    key:'',
-                    value:''
-                }]
+            _id: '',
+            title: '',
+            brand: '',
+            description: '',
+            stock: 0,
+            image_url: [],
+            thumbnail: '',
+            price: {
+                cost: 0,
+                mrp: 0,
+                discount: ''
+            },
+            features: [],
+            productDetails: [{
+                key: '',
+                value: ''
+            }]
             },
             quantity:0
         }],

@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import APIClient from "../services/api-client"
-import { Alert, AlertIcon, AlertTitle, AlertDescription, Box } from "@chakra-ui/react"
+import { Alert, AlertIcon, AlertTitle, AlertDescription } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
 
 export default function PaymentSuccess() {

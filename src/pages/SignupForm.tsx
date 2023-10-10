@@ -3,8 +3,7 @@ import FormContainer from "../Components/FormComponents/FormContainer";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { userRegister } from "../hooks/userHooks";
+import APIClient from "../services/api-client";
 // import useGetCart from "../hooks/cartapi";
 
 
@@ -24,8 +23,8 @@ const initialSignupFormState: SignupFormState = {
 
 
 export default function SignupForm() {
-    const registrationMutation = useMutation(userRegister)
-
+    // const registrationMutation = useMutation(userRegister)
+    const apiClient = new APIClient('/register')
     const location = useLocation()
     const navigate = useNavigate()
     const {
@@ -46,10 +45,11 @@ export default function SignupForm() {
 
     const userSignup = async(data:any) => {
         try {
-            await registrationMutation.mutateAsync(data).then((res:any)=>{
-                localStorage.setItem("token", res.user.token)
-                localStorage.setItem("user",res.user.email)
-                localStorage.setItem('refresh-token', res.user.refreshJwtToken)
+            apiClient.register(data).then((res:any)=>{
+                console.log(res)
+                localStorage.setItem("token", res.data.token)
+                localStorage.setItem("user",res.data.user.email)
+                // localStorage.setItem('refresh-token', res.user.refreshJwtToken)
                 navigate(location.state?.prevUrl)
             })
         } catch (error) {

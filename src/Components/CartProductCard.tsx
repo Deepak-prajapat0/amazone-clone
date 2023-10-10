@@ -1,7 +1,7 @@
 import { Box, Button, Divider, HStack, Heading, Image, Select, Stack, Text, VStack } from "@chakra-ui/react";
-import { Product } from "../hooks/useProduct";
 import { useAppDispatch } from "../features/store";
 import { addProductToWishlist } from "../features/wishlist/wishlistSlice";
+import { Product } from "../models/ProductModel";
 // import { updateUserCart } from "../features/cart/cartSlice";
 
 interface CartProduct {

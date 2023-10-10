@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../features/store'
 import { getUserWishlist } from '../features/wishlist/wishlistSlice'
 import SpinnerLoader from '../Components/SpinnerLoader'
-import { Box, Image, SimpleGrid, Text, VStack } from '@chakra-ui/react'
+import { Box, Heading, Image, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 
 export default function Wishlists() {
@@ -17,6 +17,10 @@ export default function Wishlists() {
 
   if (loading) {
     return <SpinnerLoader />
+  }
+
+  if(wishlist === null){
+    return <Heading textAlign='center' pt='12'>No items are wishlisted</Heading>
   }
   return (
     <div>{wishlist && wishlist.products.length > 0 &&

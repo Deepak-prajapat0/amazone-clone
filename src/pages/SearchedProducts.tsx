@@ -4,7 +4,7 @@ import { searchProduct } from "../features/product/productSlice"
 import { useLocation } from "react-router-dom"
 import SpinnerLoader from "../Components/SpinnerLoader"
 import ProductCard from "../Components/ProductCard"
-import { Box, SimpleGrid } from "@chakra-ui/react"
+import { SimpleGrid } from "@chakra-ui/react"
 
 export default function SearchedProducts() {
     const dispatch = useAppDispatch()

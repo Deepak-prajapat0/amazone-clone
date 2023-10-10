@@ -1,25 +1,25 @@
-import { useEffect } from "react"
-import { useAppDispatch, useAppSelector } from "../features/store"
-import { cancelUserOrder, getOrderDetails } from "../features/order/orderSlice"
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../features/store";
+import { cancelUserOrder, getOrderDetails } from "../features/order/orderSlice";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import SpinnerLoader from "../Components/SpinnerLoader";
-import { Badge, Box, Button, Divider, HStack, Heading, Image, ListItem, Stack, Text, UnorderedList, VStack, useToast } from "@chakra-ui/react";
+import { Badge, Box, Button, Divider, HStack, Heading, Image, ListItem, Stack, Text, UnorderedList, VStack } from "@chakra-ui/react";
 
 export default function OrderDetails() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
   const { loading, orderDetail } = useAppSelector(state => state.order)
   const { id } = useParams()
-  const toast = useToast({
-    title: '',
-    status: 'success',
-    position: 'bottom-right',
-    containerStyle: {
-      maxWidth: '100%',
-    },
-    duration: 3000, // Toast duration in milliseconds
-    isClosable: true, // Allow the user to close the toast
-  })
+  // const toast = useToast({
+  //   title: '',
+  //   status: 'success',
+  //   position: 'bottom-right',
+  //   containerStyle: {
+  //     maxWidth: '100%',
+  //   },
+  //   duration: 3000, // Toast duration in milliseconds
+  //   isClosable: true, // Allow the user to close the toast
+  // })
 
   useEffect(() => {
     dispatch(getOrderDetails({ id: id! }))

@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import APIClient from "../../services/api-client";
-import { Product } from "../../models/ProductModel";
 import { Wishlist } from "../../models/WishlishtModel";
 
 const apiClient = new APIClient('/wishlist');
