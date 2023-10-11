@@ -24,7 +24,7 @@ interface Response<T> {
 //     cart: Cart;
 // }
 
-const url = "http://localhost:3001"
+const url = 'https://react-ecommerce-api-bwv0.onrender.com'
 let abortController:any;
 const axiosInstance = axios.create({
     baseURL:url ,
