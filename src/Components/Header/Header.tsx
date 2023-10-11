@@ -9,7 +9,8 @@ export default function Header() {
     const navigate = useNavigate();
     const [search ,setSearch]= useState('')
     const cart = useAppSelector(state=>state.cart.cart)
-    const{user} = useAppSelector((state)=>state.auth)
+    // const{user} = useAppSelector((state)=>state.auth);
+    const user = localStorage.getItem('user');
     let localCart = localStorage.getItem('cart');
     if(localCart){
         let cartItem = JSON.parse(localCart);
@@ -31,6 +32,14 @@ export default function Header() {
                navigate(`/product/search?q=${search}`)
            }
     }
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (search.length < 2) {
+            return
+        }
+        else if (event.key === 'Enter') {
+            navigate(`/product/search?q=${search}`)
+        }
+    };
 
 
  
@@ -44,7 +53,7 @@ export default function Header() {
                     <InputRightElement backgroundColor="#FEBD69" borderEndRadius="4px" onClick={handleSearch} >
                         <AiOutlineSearch/>
                     </InputRightElement>
-                    <Input type='text' onChange={(e)=>setSearch(e.target.value)} paddingLeft={4} placeholder='Search Amazon.in' bg={"white"} border="none" borderRadius={"5px"} outline="none" _focusVisible={{ border: "none" }} _focus={{ borderColor: "transparent", outline: "2.5px solid #FEBD69", outlineOffset: "0px" }} />
+                    <Input type='text' onChange={(e)=>setSearch(e.target.value)} onKeyDown={handleKeyPress} paddingLeft={4} placeholder='Search Amazon.in' bg={"white"} border="none" borderRadius={"5px"} outline="none" _focusVisible={{ border: "none" }} _focus={{ borderColor: "transparent", outline: "2.5px solid #FEBD69", outlineOffset: "0px" }} />
                 </InputGroup>
                 <HStack gap="4" px="1" fontWeight={800} fontSize="10px">
                     <VStack width="100%" gap=".5">

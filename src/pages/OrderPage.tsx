@@ -12,11 +12,13 @@ export default function OrderPage() {
   const [orders, setOrders] = useState([])
 
   useEffect(() => {
-    dispatch(getUserOrders()).then(res => {
+   if(localStorage.getItem('token')){
+     dispatch(getUserOrders()).then(res => {
       if (res.payload) {
         setOrders(res.payload.order)
       }
     })
+   }
   }, [])
 
 

@@ -8,7 +8,6 @@ import { Product } from "../models/ProductModel";
 // import { products } from "../data/products";
 // const logout = useLogout()
 
-
 export interface FetchResponse{
     products: Product[];
 }
@@ -56,6 +55,17 @@ axiosInstance.interceptors.request.use(
 );
 
 
+axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        // const dispatch = useAppDispatch()
+        if (error.response && error.response.status === 401 || error.response.status === 500) {
+            localStorage.clear();
+            history.pushState(null,'/')
+        }
+        return Promise.reject(error);
+    }
+);
 
 
 class APIClient<T>{
@@ -133,17 +143,6 @@ class APIClient<T>{
 
 
 
-axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        // const dispatch = useAppDispatch()
-        if (error.response && error.response.status === 401 || error.response.status === 500) {
-            // store.dispatch(logout())
-            localStorage.clear()
-        }
-        return Promise.reject(error);
-    }
-);
 
 export {axiosInstance} 
 export default APIClient;

@@ -41,7 +41,7 @@ const initialState:CartResult ={
         totalPrice:0
 
     },
-    loading:true,
+    loading:false,
     error:''
 }
 

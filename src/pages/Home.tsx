@@ -1,9 +1,11 @@
+import React, { Suspense } from "react";
 import { Box, Image } from "@chakra-ui/react";
 import ImageCarousel from "../Components/ImageCarousel/ImageCarousel";
 import './Home.css';
 import { section1, section2, appliances } from "../data/homeData";
 import GridOnLarge from "../Components/GridOnLarge";
-import ProductsContainer from "../Components/ProductsContainer";
+const ProductsContainer = React.lazy(() => import("../Components/ProductsContainer"));
+import ProductHistory from "../Components/ProductHistory";
 
 export default function Main() {
 
@@ -25,8 +27,11 @@ export default function Main() {
       {/* position="sticky" top={{ base: "8rem", sm: "10rem", md: "12rem", lg: "14rem" }} */}
       <Box width="100vw" px="2" mt={{ base: "-12rem", sm: "-5rem", md: "-5rem" }} >
         <GridOnLarge cards={cards} />
+        {localStorage.getItem('productHistory') && <ProductHistory />}
         <Image src="https://m.media-amazon.com/images/G/31/AMS/IN/970X250-_desktop_banner.jpg" alt="furnishing" m="auto" />
-        <ProductsContainer cards={cards} />
+        <Suspense fallback={<p>Loading</p>}>
+          <ProductsContainer cards={cards} />
+        </Suspense>
       </Box>
       {/* </Box> */}
     </div>

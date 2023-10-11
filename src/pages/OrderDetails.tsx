@@ -10,16 +10,6 @@ export default function OrderDetails() {
   const navigate = useNavigate()
   const { loading, orderDetail } = useAppSelector(state => state.order)
   const { id } = useParams()
-  // const toast = useToast({
-  //   title: '',
-  //   status: 'success',
-  //   position: 'bottom-right',
-  //   containerStyle: {
-  //     maxWidth: '100%',
-  //   },
-  //   duration: 3000, // Toast duration in milliseconds
-  //   isClosable: true, // Allow the user to close the toast
-  // })
 
   useEffect(() => {
     dispatch(getOrderDetails({ id: id! }))

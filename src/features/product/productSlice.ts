@@ -39,10 +39,12 @@ const initialState: ProductsResult = {
     error: ''
 }
 export const getAllProducts = createAsyncThunk('product/fetch', async () => {
+    apiClient = new APIClient('/products');
     const response = await apiClient.getProducts()
     return response.data
 })
 export const getProduct = createAsyncThunk('single/product/fetch', async (payload: { id: string }) => {
+    apiClient = new APIClient('/products')
     const response = await apiClient.getProductById(payload.id)
     return response.data
 })

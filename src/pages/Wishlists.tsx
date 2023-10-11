@@ -1,25 +1,24 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../features/store'
 import { getUserWishlist } from '../features/wishlist/wishlistSlice'
-import SpinnerLoader from '../Components/SpinnerLoader'
 import { Box, Heading, Image, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 
 export default function Wishlists() {
 
   const dispatch = useAppDispatch()
-  const { loading, wishlist } = useAppSelector(state => state.wishlist)
+  const { wishlist } = useAppSelector(state => state.wishlist)
 
   useEffect(() => {
-    dispatch(getUserWishlist())
+    if(localStorage.getItem('token')){
+      dispatch(getUserWishlist())
+    }
   }, [])
 
-
-  if (loading) {
-    return <SpinnerLoader />
+  if(!localStorage.getItem('token')){
+    return <Heading pt='4' textAlign='center'>Login to see your saved items</Heading>
   }
-
-  if(wishlist === null){
+  if(!Object.keys(wishlist).length){
     return <Heading textAlign='center' pt='12'>No items are wishlisted</Heading>
   }
   return (

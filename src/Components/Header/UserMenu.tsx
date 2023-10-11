@@ -4,14 +4,15 @@ import { AiFillCaretDown } from 'react-icons/ai';
 import SIgnInButton from '../CustomComponent/SIgnInButton';
 import { useNavigate } from 'react-router-dom';
 import APIClient from '../../services/api-client';
-import { useAppDispatch, useAppSelector } from '../../features/store';
+import { useAppDispatch } from '../../features/store';
 import { logout } from '../../features/auth/authSlice';
 
 
 export default function UserMenu() {
     const [open, setOpen] = useState(false)
     const navigate = useNavigate()
-    const {token}= useAppSelector(state=>state.auth)
+    // const {token}= useAppSelector(state=>state.auth)
+    const token = localStorage.getItem('token')
     const dispatch = useAppDispatch()
     const api = new APIClient('/logout')
 

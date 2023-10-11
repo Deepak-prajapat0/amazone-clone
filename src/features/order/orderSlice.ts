@@ -65,7 +65,7 @@ const initialState: OrderResult = {
         canceledOn:'',
         createdAt:''
     },
-    loading: true,
+    loading: false,
     error: ''
 }
 
@@ -102,6 +102,9 @@ const orderSlice = createSlice({
         builder.addCase(getUserOrders.fulfilled, (state, action) => {
             state.loading = false
             state.order = action.payload.order
+        })
+        builder.addCase(getUserOrders.rejected, (state, _action) => {
+            state.loading = false
         })
         builder.addCase(getOrderDetails.pending, (state, _action) => {
             state.loading = true
