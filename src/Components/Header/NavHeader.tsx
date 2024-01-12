@@ -18,7 +18,7 @@ export default function NavHeader() {
               <span>All</span>
           </HStack>
           {links.map((link,index)=>
-              <Link minWidth="fit-content" key={index} href={link.link} >{link.name}</Link>
+              <Link key={index} >{link.name}</Link>
           )}
       </HStack>
   )
